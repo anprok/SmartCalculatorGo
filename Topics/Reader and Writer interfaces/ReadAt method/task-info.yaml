@@ -1,0 +1,15 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"fmt\"\n    \"strings\"\n)\n\nconst quote =\
+    \ \"Knowledge is better than money\"\n\nfunc main() {\n\treader := strings.NewReader(quote)\n\
+    \n    buf := make([]byte, ??)\n\treader.ReadAt(??, ??)\n\tfmt.Println(string(buf))\n\
+    }"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23869#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 20:28:50 UTC"
+record: -1

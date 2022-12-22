@@ -1,0 +1,34 @@
+<h2>The problem with brackets</h2>
+<p></p>
+<p>Here is one of the classic tasks of computer science — check for paired brackets. You get a string with brackets. It can be a correct layout like <code class="java">(())()</code> or a string with missing brackets <code class="java">())()</code> (the open bracket is missing). You need to find strings with broken layout and print out an error message. Try to solve it using a <code class="java">Queue</code> structure.</p>
+<p></p><div class="alert alert-primary">Note that the <code class="java">Queue</code> struct is already declared and set up to store <code class="java">rune</code> values for this task.</div>
+<p>Don't think about how to read the input and return an answer, focus on the task. If you are stuck, welcome to the HINT section.</p>
+<ol>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-766').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-766" style="display:none;">if it's an open bracket, Push it to the structure;</div></li>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-840').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-840" style="display:none;">if it's a closed bracket, Pop the value from the Queue structure;</div></li>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-929').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-929" style="display:none;">if the Pop function return an error it means the layout is broken;</div></li>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-1019').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-1019" style="display:none;">at the end, you need to Pop the last value;</div></li>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-1086').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-1086" style="display:none;">if the last value is exists, it means the layout is broken;</div></li>
+<li><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-1169').style.display='inline'">
+        Hint
+      </button>
+<div id="hint-1169" style="display:none;">if the structure is empty, it means the layout is correct.</div></li>
+</ol><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">(())()<br></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">All brackets are closed!<br></code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 8 seconds</font><br><br>
+<b>Caution</b><br><br>
+You may see errors in your code or execution results due to missing context. Don’t worry about it, just write the solution and press Check.
+<br><br>

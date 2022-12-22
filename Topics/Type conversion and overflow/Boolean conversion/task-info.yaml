@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: We can compare them as false to zero-value for integers.
+- text: We can't compare boolean values to any other type.
+- text: We can compare them as false to empty strings.
+- text: We can compare boolean values as false to zero-value and negative numbers
+    for integers.
+files:
+- name: main.go
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18713#comment
+status: Solved
+record: -1
+local_check: false

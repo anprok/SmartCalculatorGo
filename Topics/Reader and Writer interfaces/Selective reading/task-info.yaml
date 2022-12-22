@@ -1,0 +1,17 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"fmt\"\n\t\"io\"\n\t\"strings\"\n)\n\nconst\
+    \ textSource = \"Supercalifragilisticexpialidocious\"\n\nfunc main() {\n\tfmt.Println(\"\
+    full text:\", textSource)\n\n    reader := strings.NewReader(textSource)\n\n \
+    \   // read 7 bytes from reader\n\tp := make([]byte, 7)\n\treader.Seek(??, ??)\n\
+    \tif _, err := reader.Read(p); err != nil {\n\t\tfmt.Println(err)\n\t}\n\tfmt.Print(\"\
+    selected: \", string(p), \" \")\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23868#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 20:24:57 UTC"
+record: -1

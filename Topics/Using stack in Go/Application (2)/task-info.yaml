@@ -1,0 +1,47 @@
+type: code
+custom_name: Application
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import (
+        "fmt"
+        "errors"
+    )
+
+    func main() {
+        var brackets string
+        // the Queue is already included
+        var solver Queue
+
+        fmt.Scan(&brackets)
+
+        for _, bracket := range brackets {
+            if bracket == '(' {
+                ?
+            }
+            if bracket == ')' {
+               ?
+                if ? {
+                    fmt.Println("error")
+                    return
+                }
+            }
+        }
+
+        ?
+        if ? {
+            fmt.Println("All brackets are closed!")
+        } else {
+            fmt.Println("error")
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/24215#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 10 Dec 2022 22:22:08 UTC"
+record: -1

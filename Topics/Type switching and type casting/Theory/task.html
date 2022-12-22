@@ -1,0 +1,58 @@
+<h2>Type switching and type casting</h2>
+<html><body><p>Fun fact: in Go, it is not allowed to perform mathematical operations on mixed numeric types. However, if you convert these types to one single numeric type, you will have no issues with using operations over numbers. In this case, the knowledge of type casting and type switching would be handy. <strong>Type casting</strong> (type conversion) in Go is a method of converting the type of data from one to another. <strong>Type switching</strong>, on the other hand, is a way of asserting multiple types in sequence and getting the type of the interface. This topic will focus on the ways to perform type conversion and type switching in Go. </p>
+<h5 id="how-to-do-type-casting">How to do type casting</h5>
+<p>Suppose you are designing a Simple Calculator project. You have two inputs, the first one is an integer, the second one is a float, and the desired output is the sum of these numbers. </p>
+<pre><code class="language-go">var number1 int32 = 56
+var number2 float32 = 127.5</code></pre>
+<p>You assign the result of the addition to a new variable and print it.</p>
+<pre><code class="language-go">number3 := number1 + number2
+fmt.Println(number3)</code></pre>
+<p>However, intriguingly, Go says that it is impossible and returns an error. The message is the following:</p>
+<pre><code class="language-go">invalid operation: number1 + number2 (mismatched types int32 and float32)</code></pre>
+<p>It happens because in Go you can perform operations only over the variables of the same type, otherwise, you get an error. Type casting is the way to solve this. Use the following syntax to achieve it:</p>
+<pre><code class="language-go">newVariable := Type(convertedVariable)</code></pre>
+<p>You have a variable (<code class="language-go">convertedVariable</code>) that you want to convert to another type (<code class="language-go">Type</code>). In the example above, you know that the result of the addition of <code class="language-go">number1</code> and <code class="language-go">number2</code> will be a float, therefore, you should convert <code class="language-go">number1</code> from <code class="language-go">int32</code> to <code class="language-go">float32</code>:</p>
+<pre><code class="language-go">number1Converted := float32(number1)</code></pre>
+<p>Now, if you add these numbers and print the result like this:</p>
+<pre><code class="language-go">number3 := number1Converted + number2
+fmt.Println(number3)
+
+// Output
+// 183.5</code></pre>
+<p>You will get the output of <code class="language-go">183.5</code>.</p>
+<h5 id="how-to-do-type-switching">How to do type switching</h5>
+<p>Before you start type switching, it's important to understand type assertion. <strong>Type assertion</strong> is a way of getting access to the interface's value. As the name suggests, by type assertion you assert that a variable has some type. Saying so, type assertion doesn't allow changing the interface's data type.</p>
+<p>Let's say you have an interface <code class="language-go">v</code> with the value <code class="language-go">Golang</code>. </p>
+<pre><code class="language-go">var v interface{} = "Golang"</code></pre>
+<p>You can access the interface's concrete value in the following way:</p>
+<pre><code class="language-go">s, ok := object.(type)</code></pre>
+<p><code class="language-go">object</code> in this case is <code class="language-go">v</code>, and the <code class="language-go">type</code> is a <code class="language-go">string</code>. If you then print <code class="language-go">s</code> and <code class="language-go">ok</code>, you will get the following result: </p>
+<pre><code class="language-go">s, ok := v.(string)
+fmt.Println(s, ok)
+
+// Output
+// Golang true</code></pre>
+<p>Let's review what happens here. First, you created <code class="language-go">v</code> and it is of the <code class="language-go">inteface{}</code> type. Then, you assigned a <code class="language-go">string</code> type to it, making <code class="language-go">v</code> actually a string. During the assertion, you should check whether you are asserting a type correctly or not. Therefore, type assertion returns two values. Here, <code class="language-go">s</code> is the value of the interface, and <code class="language-go">ok</code> is the result of the assertion check. It returns <code class="language-go">true</code> if the assertion is done correctly, and <code class="language-go">false</code> otherwise.</p>
+<p>Interestingly, here you can ignore the variable <code class="language-go">ok</code>, and it is not necessary to use it in every type of assertion. Having a variable <code class="language-go">s</code> would be enough. For example, <code class="language-go">s := object.(type)</code> will work similarly with no error. Only the value of the interface would be assigned to the <code class="language-go">s</code> variable. One thing to note is that if it is impossible to do the assignment, then Go will raise panic. </p>
+<p>Type switching does a couple of type assertions in a row and returns the one that matches the type. It is used when you are not sure about the type of interface.</p>
+<p>For example, let's continue working with the interface <code class="language-go">v</code>. Right now, you are not sure about the type and want to print the data type of the interface's value. You can do this with type switching: </p>
+<pre><code class="language-go">switch v.(type) {
+case nil:
+   fmt.Println("v is a nil type")
+case int:
+   fmt.Print("v is an int type")
+case string:
+   fmt.Println("v is a string type")
+default:
+   fmt.Println("type is not defined")
+}
+
+// Output
+// v is a string type</code></pre>
+<p>This piece of code will return <code class="language-go">v is a string type</code> because the value of the interface is of the <code class="language-go">string</code> type.</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>If you perform mathematical operations over numerical variables with different data types, the compiler will not allow us to execute the code by raising an error. Type casting helps to solve this. It is a way of changing the type of a variable. Type switching is a method of identifying the type of an interface.</p>
+<ul>
+<li>To perform type casting, you can use the following formulation: <code class="language-go">Type(Variable)</code>, where <code class="language-go">Type</code> is the type to which we are converting, and <code class="language-go">Variable</code> is the variable or its value requiring type conversion.</li>
+<li>Type assertion is a way to state a variable's type. The expression of assertion usually returns two values: the concrete value of the interface and the result of checking the correctness of the assertion. If you are sure that the assertion has been done correctly, then you can omit the second value. Therefore, it is optional. However, in case of any doubts about the type of interface, you can check it using type switching. </li>
+</ul></body></html>

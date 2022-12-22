@@ -1,0 +1,20 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import "fmt"
+
+    func main() {
+        letters := [10]rune{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'}
+        //put your code here
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/22397#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 16:15:47 UTC"
+record: -1

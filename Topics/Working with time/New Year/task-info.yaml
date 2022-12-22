@@ -1,0 +1,30 @@
+type: code
+custom_name: New Year!
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import (
+        "fmt"
+        "time"
+    )
+
+    func main() {
+        now := time.Now()
+
+        nextYear := ? + 1
+
+        firstJanuary := time.Date(?, ?, 1, 0, 0, 0, 0, time.Local)
+
+        // The hidden 'check' function checks your answer:
+        check(firstJanuary.Sub(now))
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23542#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 17:18:45 UTC"
+record: -1

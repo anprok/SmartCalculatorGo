@@ -1,0 +1,17 @@
+type: code
+custom_name: Debug program
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nconst (\n\tclass  = 36\n\tpepper = \"Pepper\"\
+    \n\tno     = \"No\"\n)\n\nfunc main() {\n\tvar number string\n\tfmt.Scanln(&number)\n\
+    \n\tswitch class % number {\n\tcase 0:\n\t\tfmt.Println(pepper)\n\tcase 1, 8,\
+    \ 10, 35:\n\t\tfmt.Println(\"Pepperoni\")\n\tdefault:\n\t\tfmt.Println(no)\n\t\
+    }\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23127#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 08:43:38 UTC"
+record: -1

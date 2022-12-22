@@ -1,0 +1,20 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"fmt\"\n    \"time\"\n)\n\nconst (\n\tYear\
+    \  = 1902\n\tMonth = 11\n\tDay   = 2\n)\n\n// DO NOT delete the comments on each\
+    \ line below!\nfunc main() {\n    utc := time.Date(Year, Month, Day, 0, 0, 0,\
+    \ 0, time.UTC)\n    london := utc.Add(1 * time.Hour) // nolint: gomnd\n    moscow\
+    \ := utc.Add(? * time.Hour) // nolint: gomnd\n    newYork := utc.Add(-4 * ?) //\
+    \ nolint: gomnd\n    hongKong := utc.Add(?) // nolint: gomnd\n    tokyo := utc.Add(?)\
+    \ // nolint: gomnd\n    darwin := utc.Add(? + ?*time.Minute) // nolint: gomnd\n\
+    \n    fmt.Printf(\"London: %v\\n\", London)\n    //Repeat for:\n    //Moscow\n\
+    \    //New York\n    //Hong Kong\n    //Tokyo\n    //Darwin\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/19303#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 17:29:55 UTC"
+record: -1

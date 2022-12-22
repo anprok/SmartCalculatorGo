@@ -1,0 +1,13 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"fmt\"\n\t\"io\"\n)\n\ntype FunnyBox struct\
+    \ {\n}\n\nfunc main() {\n\tvar c io.Closer\n\tc = &FunnyBox{}\n\tc.Close()\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23871#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Thu, 22 Dec 2022 11:09:47 UTC"
+record: -1

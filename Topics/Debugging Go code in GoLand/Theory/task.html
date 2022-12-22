@@ -1,0 +1,60 @@
+<h2>Debugging Go code in GoLand</h2>
+<p>You are already familiar with the debugging process from the command line with Delve. This is a simple and effective way. However, it takes a lot of time and may not always be clear enough.</p>
+<p>So, if you are using the GoLand IDE, there is one more tool at your disposal. It allows you to make the debugging process easy and intuitive. This is the IDE's built-in debugger.</p>
+<h5 id="about-the-debugger">About the debugger</h5>
+<p>This may come as a surprise, but the GoLand debugger uses Delve as its debugging tool to work. Therefore, in it, you can see the entire set of functionality, just like in console debugging. Only in this case, the IDE gives you the opportunity to do all this in a graphical shell in the usual ways.</p>
+<p>Debugging looks almost like a normal program launch, only with some special fields. </p>
+<p> </p>
+<p style="text-align: center;"><img alt="" height="1054" name="Screenshot from 2022-10-02 22-41-38.png" src="https://ucarecdn.com/7fb4bb4d-dc63-414c-be3d-7c8ca922609a/" width="1849"/></p>
+<p>The debugger is already set up to give you all the data you need. However, if you want to customize something for yourself, you can always do it in the <code class="java">GoLand Settings&gt;Build, Execution, Deployment&gt;Debugger</code> settings window. We will not cover them in detail, but you can read them in the <a href="https://www.jetbrains.com/help/go/settings-debugger.html" rel="noopener noreferrer nofollow" target="_blank">documentation</a>.</p>
+<p>So how do you use this tool? Let's take a closer look at all the steps.</p>
+<p></p><div class="alert alert-warning">Please note that you can change the code while debugging is run, but to apply these changes you need to start the debugger again.</div>
+<h5 id="breakpoints">Breakpoints</h5>
+<p>The first thing you should do is to set <strong>breakpoints</strong>. Breakpoints are special markers that indicate places where the debugger needs to freeze the state of the program. Without them, your code will run as if it were running normally, and you will only see the result of its execution. To set breakpoints, click in the field to the left of the code. To remove an unnecessary breakpoint, click on it again.</p>
+<p style="text-align: center;"><img alt="" height="221" name="Screenshot from 2022-10-02 23-10-55.png" src="https://ucarecdn.com/914c8453-99cc-44ca-8976-3e9c18279f5c/" width="547"/></p>
+<h5 id="launch-and-main-elements">Launch and main elements</h5>
+<p>You can use one of the following methods to run the program in debug mode. All of these methods launch the debugger in the same way, so which one to use is up to you! You can use the main menu <code class="java">Run&gt;Debug</code> or both launch menu 'Debug go build filename.go' on the top right and to the left of the <code class="java">main</code> function.</p>
+<p style="text-align: center;"><img alt="" height="807" name="Screenshot from 2022-10-09 15-26-51.png" src="https://ucarecdn.com/19e557bb-2dc5-4270-94e3-4f52609ddfb0/" width="915"/></p>
+<p>You will open an additional tab in the bottom panel – Debug (4). On this panel, you can find the following debug controls:</p>
+<ol>
+<li>Debugger/Console switch.</li>
+<li>The current frame stack.</li>
+<li>A field with the current values of the variables, arguments, and context of the selected frame.</li>
+<li>Debug process control menu.</li>
+<li>Step-by-step debugging.</li>
+</ol>
+<p>On the <code class="java">Debugger</code> tab, you can monitor values while debugging. The <code class="java">Console</code> displays the progress of the program and let you enter data while the program is running or monitor console output.</p>
+<h5 id="frames">Frames</h5>
+<p><strong>Frame</strong> corresponds to the active function or method. They store the values of variables, arguments, and context.</p>
+<p style="text-align: center;"><img alt="" height="208" name="Screenshot from 2022-10-09 17-58-38.png" src="https://ucarecdn.com/68bbb974-ed35-4826-bbd7-6f771177750e/" width="266"/></p>
+<p>As you can see, this window lists all the functions that are currently running in order:</p>
+<ul>
+<li>main.isEven(line:17) – the program is currently stopped at this line</li>
+<li>main.main(line:8) – isEven() function call line</li>
+<li>runtime.main, runtime.goexit – system functions that control program operation are added at compile time</li>
+</ul>
+<h5 id="variable-values">Variable values</h5>
+<p>Why are you running the debugger? Of course, to see which way the program execution will go and what values the variables will take at a particular point in the execution. This field can give you information with all the values in the current execution location and even more!</p>
+<p style="text-align: center;"><img alt="" height="209" name="Screenshot from 2022-10-09 18-54-06.png" src="https://ucarecdn.com/eed45606-28a8-4b2e-96e3-8aa39d8621da/" width="827"/></p>
+<p>When you need to see the value of a specific element of an array, map, or list you can add it to the trace using normal Go syntax. Like entry <code class="java">array[5]</code> or <code class="java">someMap["key"]</code> for an array or map. And, if the element is available in the current scope of the program, its value will be shown. All new tracing dimensions will be marked by a special glasses sign. These values will be with you until you remove them from tracking.</p>
+<p>Similarly, you can simply calculate the value of some expression if you type it into a line and press enter. But remember, when you leave this step the value will be gone.</p>
+<h5 id="controlling-the-debugging-process">Controlling the debugging process</h5>
+<p>The <strong>Debug process control menu (4)</strong> is a top-level menu that allows you to control the debugging process in large steps. Most of the controls in it are intuitive and will not cause you problems. But you can take a quick look at the elements whose behavior can cause difficulties.</p>
+<p>For example <code class="java">Resume Program</code> can resume program execution after a pause and go to the next breakpoint. A question may arise "Why do we need a pause if we have breakpoints?". It's simple – sometimes your program can get stuck while executing a piece of code, like a cycle, and not reach the breakpoint. In this case, it may be necessary to pause it and see the reasons.</p>
+<p>Also, you may want to <code class="java">View breakpoints...</code> It opens a window with all breakpoints and their settings. And sometimes you may want to run the program further without breakpoints but not remove them at all. In this case, you can use <code class="java">Mute brakepoints</code>.</p>
+<p>When you set breakpoints, you may want to set breakpoints on every line of your program to control execution at any point. But this is not necessary. You can set breakpoints at key points and then step through the program. You can try it with <strong>Step by step debugging (5)</strong>.</p>
+<p>In this menu, the most interesting and useful and at the same time incomprehensible can be <code class="java">Step over</code><strong>, </strong><code class="java">Step into</code> and <code class="java">Step out</code>. All of these elements are used to step in relation to the function or methods. How exactly are they used? Let's find out!</p>
+<p>Step over goes to the next line of code, even if the current one contains a call to other functions, and skips passing through them. You can use this if you don't need to watch the function called on that line executed. For example, are you sure about its calculations or is it a function of the standard library "fmt".</p>
+<p>Using the next two you can step <em>into</em> the function in the current line or <em>out</em> the current function to one level upper. It may be useful when you need to jump inside a function and check the execution steps or you have already looked at all the necessary values in the current frame and you need to exit it quickly.</p>
+<p></p><div class="alert alert-primary">Note that if you are using the <code class="java">Run to cursor</code> and there is a breakpoint set along the step path, the debugger jumps to it</div>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you got acquainted with the main features of the GoLand debugger. Below are the main points:</p>
+<ul>
+<li>how to start debugging process</li>
+<li>how to work with breakpoints</li>
+<li>how to navigate through program execution in debug mode</li>
+<li>how to see the values of variables, arguments</li>
+<li>how to calculate additional values during program execution</li>
+</ul>
+<p>You can always refer to the IDE <a href="https://www.jetbrains.com/help/go/debugging-code.html" rel="noopener noreferrer nofollow" target="_blank">documentation</a> to learn about settings and some rarely used features of the GoLand debugger.</p>
+<p>Now let's practice!</p>

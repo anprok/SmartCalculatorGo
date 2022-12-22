@@ -1,0 +1,26 @@
+type: code
+custom_name: Implement your own Reader!
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"fmt\"\n    \"io\"\n)\n\ntype WisdomBox struct\
+    \ {\n\tquotes string\n}\n\nfunc (wb *WisdomBox) Write(p []byte) (n int, err error)\
+    \ {\n\twb.quotes += string(p)\n\treturn len(p), nil\n}\n\nfunc (wb *WisdomBox)\
+    \ Read(p []byte) (n int, err error) {\n    // read data to the p slice\n\treturn\
+    \ len(???), nil\n}\n\nfunc main() {\n\tvar box io.ReadWriter = &WisdomBox{}\n\t\
+    fmt.Fprintln(box, \"Never underestimate anyone\")\n\tfmt.Fprintln(box, \"Home\
+    \ is where the heart is\")\n\tfmt.Fprintln(box, \"You can be whoever you want\
+    \ to be\")\n\n\tp := make([]byte, 1024)    \n\tn, _ := box.Read(p)\n\tfmt.Print(string(p[:n-1]))\n\
+    }"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23870#comment
+status: Failed
+feedback:
+  message: "Failed. Wrong answer\n\nThis is a sample test from the problem statement!\n\
+    \nTest input:\n\nCorrect output:\nNever underestimate anyone\nHome is where the\
+    \ heart is\nYou can be whoever you want to be\n\nYour code output:\n\0\0\0\0\0\
+    \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
+    \0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\
+    \0\0\0\0\n"
+  time: "Wed, 21 Dec 2022 20:40:04 UTC"
+record: -1

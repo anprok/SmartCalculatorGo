@@ -1,0 +1,16 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// DO NOT delete or modify\
+    \ the code block below, it reads a random input word\n\tvar word string\n\tfmt.Scan(&word)\n\
+    \n\t// Use slice expressions with the len() function \n\t// to remove all the\
+    \ letters from 'word' except for the last letter.\n\tword = word[len(?)?]\n\n\
+    \    fmt.Println(word)\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23524#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Fri, 02 Dec 2022 21:04:42 UTC"
+record: -1

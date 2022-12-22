@@ -1,0 +1,18 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nfunc main() {\n\telements := []string{\"\
+    Helium\", \"Boron\", \"Neon\", \"Calcium\", \"Iodine\"}\n\n\telem1 := elements[0][?]\
+    \ // abbreviation of Helium\n    elem2 := elements[1][?] // abbreviation of Boron\n\
+    \telem3 := elements[2][?] // abbreviation of Neon\n\telem4 := elements[3][?] //\
+    \ abbreviation of Calcium\n\telem5 := elements[4][?] // abbreviation of Iodine\n\
+    \n    // DO NOT delete the line below; it prints the substrings!\n\tfmt.Println(elem1,\
+    \ elem2, elem3, elem4, elem5)\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/20418#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Fri, 02 Dec 2022 21:08:25 UTC"
+record: -1

@@ -1,0 +1,20 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"bufio\"\n    \"fmt\"\n    \"os\"\n    \"\
+    regexp\"\n)\n\nfunc main() {\n    // DO NOT modify the code block below:\n\tscanner\
+    \ := bufio.NewScanner(os.Stdin)\n\tscanner.Scan()\n\tline := scanner.Text()\n\n\
+    \    // Create the regexps and write the rest of the required code below:\n\t\
+    reDot := regexp.MustCompile(`  *\\.`) // whitespace + dot\n\treComma := ?.MustCompile(?)\
+    \ // whitespace + comma\n\treExclamation := ?.?(?) // whitespace + exclamation\n\
+    \n\tonDot := reDot.MatchString(line)\n\tonComma := ?.MatchString(line)\n\tonExclamation\
+    \ := ?.?(line)\n\n\tif onDot || ? || onExclamation {\n\t    fmt.Print(\"error\"\
+    )\n\t} else {\n\t    fmt.Print(?)\n\t}\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/19850#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Thu, 22 Dec 2022 13:03:41 UTC"
+record: -1

@@ -1,0 +1,20 @@
+type: code
+custom_name: Debug program
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfreezing := 1999\n\tdefrosting\
+    \ := 2999\n\n\tleapYear := 0\n\tfor year := defrosting; year <= freezing; year++\
+    \ {\n\t\tif isLeap(year) {\n\t\t\tleapYear++\n\t\t} else {\n\t\t\tleapYear--\n\
+    \t\t}\n\t}\n\t// please, don't correct this output\n\tfmt.Printf(\"%d leap years\
+    \ from %d to %d\", leapYear, freezing, defrosting)\n}\n\nfunc isLeap(year int)\
+    \ bool {\n\tif year%400 == 0 {\n\t\treturn true\n\t} else if year%4 == 0 {\n\t\
+    \treturn true\n\t} else if year%100 == 0 {\n\t\treturn false\n\t}\n\treturn false\n\
+    }"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23126#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 08:39:04 UTC"
+record: -1

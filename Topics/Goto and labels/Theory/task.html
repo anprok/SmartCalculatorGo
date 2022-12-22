@@ -1,0 +1,220 @@
+<h2>Goto and labels</h2>
+<html><body><p>You know that code runs line by line. Of course, you can utilize certain statements to skip lines (<code class="language-go">if</code> statement, for example), or use the code from another section (<code class="language-go">func</code>). Unfortunately, all these tools work under some conditions, and they can call only specific sections of code. Golang, however, has operators that give you the ability for unconditional transition. Yeah, you can just jump between the lines of code!</p>
+<p>In this topic, you will get acquainted with two useful operators. The first of them is a <strong>label</strong>. Just like a label in a store or a "Hello, my name is..." sticker. A label marks the code, and you can easily get back to it later. The second one is an <strong>unconditional transition operator</strong>. It can help you jump to a label. Let's check out how they work!</p>
+<h5 id="label-syntax">Label syntax</h5>
+<p>Hello, my name is code! What do you do when you need to mark some lines of code? In most cases, you use comments for that. It works, but the text in comments has no effect on the code execution. What if you want to get back to a line of code using programming language statements? You could use a function, but it runs a section of code and returns a strictly defined value. In Golang, there is an operator that you can use to mark a line of your code. It's called a label. Like other operators, it has a few rules of use:</p>
+<ul>
+<li>Labels can't include any whitespaces;</li>
+<li>Labels must start with a letter;</li>
+<li>After the label name, you must put the colon symbol;</li>
+<li>Labels mark lines of code, not sections.</li>
+</ul>
+<p>We will take a closer look at the last rule in the <code class="language-go">goto</code> section. For now, let's consider the most common use of labels.</p>
+<p>The first case is an interaction with a loop. More specifically, interaction with the <code class="language-go">break</code> statement of a loop. You can mark the beginning of a loop and then break it using the label.</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var num, divCount, targetCount int
+    fmt.Scan(&amp;targetCount)
+
+NumberLoop: //label
+    for {
+        divCount = 0
+        for i := 2; i &lt; num; i++ {
+            if num%i == 0 {
+                divCount++
+            }
+            if divCount &gt;= targetCount {
+                break NumberLoop // break by the label
+            }
+        }
+
+        num++
+    }
+
+    fmt.Println(num)
+}
+
+// Input:
+// 123
+// Output:
+// 83160
+</code></pre>
+<p>There are two infinite loops in the code above: the outer loop increments the number, while the inner loop counts dividers of the number. Imagine that you need to find out the first number that has equal or more count of dividers (not including the first and the final number) than the <code class="language-go">targetCount</code>. When we find the required count inside the inner loop, the search process must stop (break both loops). To make it possible, we use the <code class="language-go">break</code> statement with a label.</p>
+<p>Let's see what happens if we use the <code class="language-go">break</code> statement without a label.</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var num, divCount, targetCount int
+    fmt.Scan(&amp;targetCount)
+
+    // NumberLoop: the label is not used, and it returns an error
+    for {
+        divCount = 0
+        for i := 2; i &lt; num; i++ {
+            if num%i == 0 {
+                divCount++
+            }
+            if divCount &gt;= targetCount {
+                break // break without the label
+            }
+        }
+
+        num++
+    }
+
+    fmt.Println(num)
+}
+
+// Output:
+// ^Csignal: interrupt
+</code></pre>
+<p>As you can see, we end up getting an infinite loop. The break statement works when the <code class="language-go">divCount</code> is equal or more than the <code class="language-go">targetCount</code>, and it goes out of the inner loop. However, the outer loop continues execution. And all that's left to do is to stop it manually.</p>
+<h5 id="goto-syntax">Goto syntax</h5>
+<p>The <code class="language-go">goto</code> operator works with labels. The syntax is pretty simple: you should write <code class="language-go">goto</code>, followed by the name of the label. It affects the order of code execution: the program will execute the lines of code placed after the given label right after the <code class="language-go">goto</code> statement.</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("I'm printed")
+
+    goto EndOfTheCode
+
+    fmt.Println("I'm not printed")
+
+EndOfTheCode:
+    fmt.Println("Print at the end")
+}
+
+// Output:
+// I'm printed
+// Print at the end
+</code></pre>
+<p>You need to remember that labels mark the lines of code, not its sections (enclosed in <code class="language-go">{}</code>). It means that absolutely all lines after the label will be run again. Thus, if we place a label before <code class="language-go">goto</code>, it may cause an infinite loop:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    i := 0
+
+Start_of_the_loop: // label
+    fmt.Println(i)
+    i += 1
+
+    goto Start_of_the_loop // goto statement
+}
+
+// Output
+// 0
+// 1
+// ...
+// 256406
+// 256407
+// ^Csignal: interrupt
+</code></pre>
+<p>In this case, the end of the program is ignored, and you need to end the runtime yourself. This happens because you get a loop without the <code class="language-go">for</code> statement! You need to provide the exit condition to end the loop (use another <code class="language-go">goto</code> or use the <code class="language-go">if</code> statement).</p>
+<h5 id="best-practices">Best practices</h5>
+<p>In development, using <code class="language-go">goto</code> statements is considered a bad practice. As you may see, it can break the common way of code execution. However, in some cases, it can give a positive effect. For example, you can use it to separate the sections of code inside one scope. Besides, it can give a significant increase in speed when executing complex code (though it has almost no effect on simple scripts).</p>
+<p>One of the most often use cases of <code class="language-go">goto</code> is returning to the parent scope. For example, you can omit the <code class="language-go">else</code> statement:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var num int
+    fmt.Scan(&amp;num)
+
+    if num%2 == 0 {
+        fmt.Println("is even")
+        goto TheEnd
+    }
+    // else
+    fmt.Println("is odd")
+
+TheEnd:
+    fmt.Println("end")
+}
+
+// Input:
+// 2
+// Output:
+// is even
+// end
+
+// Input:
+// 3
+// Output:
+// is odd
+// end
+</code></pre>
+<p>Such syntax is suitable if you have a complex code inside the <code class="language-go">if-else</code> sections.</p>
+<p>However, if you want to use a <code class="language-go">goto</code> statement, don't abuse it! The more you use the <code class="language-go">goto</code> statement in your code, the closer you are to turning your code into an unreadable dump of words. This pattern is known as the "<a href="https://en.wikipedia.org/wiki/Spaghetti_code" rel="noopener noreferrer nofollow" target="_blank">Spaghetti code</a>".</p>
+<p>To prevent that, before using the <code class="language-go">goto</code> statement, think about the reasons for doing so. If you decide to use it, try to keep it to a minimum. In addition, always use <code class="language-go">goto</code> inside one scope of code (a section inside the curly braces). To tell the truth, the Golang compiler doesn't let you run the code with transitions between scopes. Let's look at a bad example of using <code class="language-go">goto</code>:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var num int
+    fmt.Scan(&amp;num)
+
+    isEven := num%2 == 0
+    isPositive := num &gt; 0
+
+    if isEven {
+        goto evenAction // trying to jump to the next if-statement
+    }
+
+    if isPositive {
+        fmt.Println("is positive!")
+    evenAction: // target Label
+        fmt.Println("is even!")
+    }
+}
+
+// Output:
+// ./script.go:13:8: goto evenAction jumps into block starting at ./script.go:16:16
+</code></pre>
+<p>Here, the <code class="language-go">goto</code> statement tries to jump into another <code class="language-go">if</code>-section. Golang stops the execution and rises the exception. Let's rewrite the same code without using <code class="language-go">goto</code>:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var num int
+    fmt.Scan(&amp;num)
+
+    isEven := num%2 == 0
+    isPositive := num &gt; 0
+
+    if isPositive {
+        fmt.Println("is positive!")
+    }
+
+    if isEven {
+        fmt.Println("is even!")
+    }
+}
+
+// Input:
+// 4
+// Output:
+// is positive!
+// is even!
+</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you've learned about labels and the <code class="language-go">goto</code> operator.  A label is just a mark we put on one line of code, whereas the <code class="language-go">goto</code> statement can have a really strong effect on your code. You need to use it carefully, since it can break the usual order of code execution. Utilizing such statements too much can turn your code into an incomprehensible set of words. It doesn't mean that using the <code class="language-go">goto</code> statement is a bad pattern. It's only bad if you abuse it.</p>
+<p>And now let's recall the main points of this topic:</p>
+<ul>
+<li>Labels have strict syntax rules;</li>
+<li>Labels are different from functions;</li>
+<li>You can use labels with a break of a loop;</li>
+<li>You can use the <code class="language-go">goto</code> operator only with labels;</li>
+<li>The code between <code class="language-go">goto</code> and a label will be ignored.</li>
+</ul></body></html>

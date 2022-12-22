@@ -1,0 +1,179 @@
+hyperskill_project:
+  id: 278
+  ide_files: https://stepik.org/media/attachments/lesson/775915/additional_files.json
+  is_template_based: false
+  use_ide: true
+update_date: "Wed, 21 Dec 2022 20:11:33 UTC"
+stages:
+- id: 1408
+  step: 21959
+  is_completed: true
+- id: 1409
+  step: 21960
+  is_completed: true
+- id: 1410
+  step: 21961
+  is_completed: true
+- id: 1411
+  step: 21962
+  is_completed: true
+- id: 1412
+  step: 21963
+  is_completed: true
+- id: 1413
+  step: 21964
+  is_completed: true
+- id: 1414
+  step: 21965
+  is_completed: true
+topics:
+  0:
+  - title: IDE
+    theory_id: 10996
+  - title: Introduction to Go
+    theory_id: 17073
+  - title: Comments
+    theory_id: 16689
+  - title: Variables and constants
+    theory_id: 14468
+  - title: Primitive types
+    theory_id: 16871
+  - title: Arithmetic operations
+    theory_id: 16679
+  - title: Computer programming
+    theory_id: 8739
+  - title: Paradigms
+    theory_id: 15860
+  - title: GoLand
+    theory_id: 19072
+  - title: Documentation
+    theory_id: 12069
+  - title: Input/Output
+    theory_id: 14527
+  - title: Arithmetic expressions in programming
+    theory_id: 17289
+  1:
+  - title: Binary numbers
+    theory_id: 5544
+  - title: Hexadecimal numbers
+    theory_id: 8788
+  - title: Units of information
+    theory_id: 6865
+  - title: Computer algorithms
+    theory_id: 16547
+  - title: The big O notation
+    theory_id: 16699
+  - title: "Best, average and worst cases"
+    theory_id: 20084
+  - title: Data structures
+    theory_id: 16927
+  - title: Pointers
+    theory_id: 15463
+  - title: Control statements
+    theory_id: 16235
+  - title: Loops
+    theory_id: 14707
+  - title: Packages
+    theory_id: 15906
+  - title: Type conversion and overflow
+    theory_id: 18710
+  - title: Functions
+    theory_id: 16388
+  - title: Unicode
+    theory_id: 7899
+  - title: Pseudocode
+    theory_id: 15090
+  - title: Pseudocode basics
+    theory_id: 19510
+  - title: Complex constructions in pseudocode
+    theory_id: 20922
+  - title: Fixed-size array
+    theory_id: 20078
+  - title: Arrays
+    theory_id: 14871
+  - title: Slices
+    theory_id: 15656
+  - title: Working with slices
+    theory_id: 15935
+  - title: Strings
+    theory_id: 15412
+  - title: String formatting
+    theory_id: 16860
+  - title: Slice expressions
+    theory_id: 20411
+  - title: Operations with strings
+    theory_id: 18548
+  - title: Functions
+    theory_id: 13884
+  - title: Introduction to logging
+    theory_id: 5538
+  - title: Errors
+    theory_id: 16774
+  - title: Advanced Input
+    theory_id: 18567
+  - title: Parsing data from strings
+    theory_id: 17935
+  3:
+  - title: Structs
+    theory_id: 17490
+  - title: Public and private scopes
+    theory_id: 17514
+  - title: Functional decomposition
+    theory_id: 17506
+  - title: Introduction to OOP
+    theory_id: 3614
+  - title: Encapsulation
+    theory_id: 8519
+  - title: Unicode package
+    theory_id: 23087
+  - title: Intro to computational thinking
+    theory_id: 8742
+  - title: Components of computational thinking
+    theory_id: 8745
+  - title: Design principles
+    theory_id: 8956
+  4:
+  - title: Introduction to Operating systems
+    theory_id: 9704
+  - title: Modules
+    theory_id: 15970
+  - title: Main (compiling and running)
+    theory_id: 16128
+  - title: Debugging Go code
+    theory_id: 23076
+  - title: Libraries
+    theory_id: 8504
+  - title: What is a bug
+    theory_id: 5504
+  - title: String search
+    theory_id: 18995
+  - title: Semantic versioning
+    theory_id: 19244
+  - title: Debugging overview
+    theory_id: 14368
+  - title: Compilers and interpreters
+    theory_id: 13865
+  5:
+  - title: Methods
+    theory_id: 17739
+  - title: Maps
+    theory_id: 16999
+  - title: Operations with maps
+    theory_id: 17206
+  - title: Single Responsibility Principle
+    theory_id: 8963
+  - title: "Hashing: overview"
+    theory_id: 9831
+  - title: Hash function
+    theory_id: 10878
+  - title: Hash table
+    theory_id: 13054
+  6:
+  - title: Interfaces
+    theory_id: 18727
+  - title: Stack
+    theory_id: 5252
+  - title: Interfaces
+    theory_id: 9640
+  - title: Math package
+    theory_id: 18431

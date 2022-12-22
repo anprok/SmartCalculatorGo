@@ -1,0 +1,14 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nfunc main() {\n\t// DO NOT delete the code\
+    \ block below!\n\tmatrix := [][]int{\n\t\t{1, 2, 3},\n\t\t{4, 5, 6},\n\t\t{7,\
+    \ 8, 9},\n\t}\n\tvar num int\n\tfmt.Scanln(&num)\n\n\t// Use a nested for...range\
+    \ loop to print each element\n\t// of the matrix in a new line, multiplied by\
+    \ 'num'\n\tfor _, row := range ? {\n\t\tfor _, ? := range ? {\n\t\t\tfmt.Println(?\
+    \ * num)\n\t\t}\n\t}\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23460#comment
+status: Solved
+record: -1

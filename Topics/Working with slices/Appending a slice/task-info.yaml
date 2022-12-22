@@ -1,0 +1,20 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"fmt\"\n    \"log\"\n    \"reflect\"\n)\n\n\
+    func solve(sl1, sl2 []string) []string {\n\tsl1 = ? // append sl2 to sl1 here!\n\
+    \n\treturn ? // return the appended slice here!\n}\n\n// DO NOT delete or modify\
+    \ the contents of the main function!\nfunc main() {\n\tvar num1, num2 int\n\t\
+    fmt.Scanln(&num1, &num2)\n\n\tsl1, sl2 := make([]string, num1), make([]string,\
+    \ num2)\n\n\tfor i := range sl1 {\n\t\tfmt.Scanln(&sl1[i])\n\t}\n\n\tfor i :=\
+    \ range sl2 {\n\t\tfmt.Scanln(&sl2[i])\n\t}\n\n\tif !reflect.DeepEqual(append(sl1,\
+    \ sl2...), solve(sl1, sl2)) {\n\t\tlog.Fatal(\"slices were not properly appended\"\
+    )\n\t}\n\tfmt.Println(solve(sl1, sl2))\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/15941#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 14 Dec 2022 16:13:54 UTC"
+record: -1

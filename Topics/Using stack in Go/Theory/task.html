@@ -1,0 +1,165 @@
+<h2>Using stack in Go</h2>
+<p>The stack is the basic structure of computer science. You may not even have encountered stacks, but we can tell you that all computers, smartphones, watches, and other gadgets use stacks! Today you see how the stack works; how to create a stack with Golang; and how to use stacks to create another important structure of computer science.</p>
+<h5 id="before-we-start">Before we start</h5>
+<p>Today we will create a Golang module. It helps us separate code into files. Let's take a few preparatory steps. Create a folder for today's topic. Go to a folder, and create a Go module:</p>
+<pre><code class="language-bash">go mod init CommonStack</code></pre>
+<p>Create 3 files (<code class="language-bash">main.go</code>, <code class="language-bash">stack.go</code> and <code class="language-bash">queue.go</code>). You can do it in your common way or use console commands:</p>
+<pre><code class="language-bash"># Linux &amp; MacOS     | Windows Powershell
+# ------------------+---------------------
+$ touch main.go     | &gt; ni main.go 
+$ touch stack.go    | &gt; ni stack.go
+$ touch queue.go    | &gt; ni queue.go</code></pre>
+<p>A folder structure must look like this:</p>
+<pre><code class="language-bash">$ tree
+.
+├── go.mod
+├── main.go
+├── queue.go
+└── stack.go
+
+0 directories, 4 files</code></pre>
+<p>Add a line to each file: <code class="language-bash">package main</code>.</p>
+<pre><code class="language-bash">// main.go
+package main
+
+// stack.go
+package main
+
+// queue.go
+package main</code></pre>
+<h5 id="simple-stack-structure">Simple stack structure</h5>
+<p>Now, let's remember which structure is called a stack. A stack is a structure that has a special order of access to elements: we work only with the end of the structure. We can add a new element to the end or get the last element. Recall that the order is called <strong>LIFO</strong> (<strong>L</strong>ast <strong>I</strong>n, <strong>F</strong>irst <strong>O</strong>ut).</p>
+<p>Golang has no special types for the stack, but we can get another structure and try to use it like a stack. Which structure is most similar? Of course, it's a slice. It will be a slice of positive integers (within the topic, we will consider negative numbers as a kind of error). What is missing in the slice so that we can use it as a stack? The special order is represented by two methods:</p>
+<ul>
+<li>a method to add an element to the end of the slice (<code class="language-bash">Push</code>);</li>
+<li>a method to get and remove an element from the slice (<code class="language-bash">Pop</code>).</li>
+</ul>
+<p>Both operations have an effect on the slice size: the <code class="language-bash">Push</code> operation is to increase the size, the <code class="language-bash">Pop</code> is to reduce.</p>
+<p>Open the <code class="language-bash">stack.go</code> file. Now we create a new struct <code class="language-bash">Stack</code> with only one parameter — <code class="language-bash">storage</code> (a <code class="language-bash">[]int</code> slice) and two methods. Both methods work with a <code class="language-bash">storage</code> variable.</p>
+<p>The <code class="language-bash">Push</code> method is pretty simple to create, we just get a Golang built-in function <code class="language-bash">append</code>. The <code class="language-bash">Pop</code> method is complex and consists of two actions: removing an element from a slice and returning its value. And, of course, we will not forget to check the size of the slice before removing it (we cannot return an element from an empty slice).</p>
+<pre><code class="language-go">// stack.go
+package main
+
+import "errors"
+
+type Stack struct {
+    storage []int
+}
+
+func (s *Stack) Push(value int) {
+    s.storage = append(s.storage, value)
+}
+
+func (s *Stack) Pop() (int, error) {
+    last := len(s.storage) - 1
+    if last &lt;= -1 { // check the size
+        return 0, errors.New("Stack is empty") // and return error
+    }
+
+    value := s.storage[last]     // save the value
+    s.storage = s.storage[:last] // remove the last element
+
+    return value, nil // return saved value and nil error
+}
+</code></pre>
+<p>Now, we move to the <code class="language-bash">main.go</code> file and create a new stack structure.</p>
+<pre><code class="language-go">// main.go
+package main
+
+import "fmt"
+
+func main() {
+    var myStack Stack
+
+    myStack.Push(1)            // [1]
+    myStack.Push(2)            // [1 2]
+    popped, _ := myStack.Pop() // [1]
+    myStack.Push(3)            // [1 3]
+
+    fmt.Println(popped)        // 2
+    fmt.Println(myStack.Pop()) // [1]   3 &lt;nil&gt;
+    fmt.Println(myStack.Pop()) // []    1 &lt;nil&gt;
+}</code></pre>
+<p>To run this code, just use the command below:</p>
+<pre><code class="language-go">go run .</code></pre>
+<p>Pay attention to the first input value — <code class="language-bash">1</code>. Regardless of future operations on the <code class="language-bash">Stack</code> structure, the <code class="language-bash">1</code> value is <em>first in</em> and <em>last out</em> (only when the last value remains in the stack storage).</p>
+<h5 id="queue">Queue</h5>
+<p>The queue is working by the <strong>FIFO </strong>principle (<strong>F</strong>irst <strong>I</strong>n, <strong>F</strong>irst <strong>O</strong>ut):</p>
+<p style="text-align: center;"><img alt="" height="300" name="01_queue.png" src="https://ucarecdn.com/ce4150c1-8a62-47d1-83dd-74bf45f7fbd1/" width="380"/></p>
+<p>The <code class="language-bash">Push</code> function will be the same in the queue, but the <code class="language-bash">Pop</code> function works in another way. Let's imagine the slice like a queue. The <code class="language-bash">Push</code> function will append an element to the end of the slice. But, when you want to <code class="language-bash">Pop</code> the element, you need to get the first element to remove and return it. When you remove the first element, all others must be shifted to the empty space (to reduce a slice size). Or, you can use the pointer to the first element (in this case, the size of a slice will always grow), and when you <code class="language-bash">Pop</code> the element, you just increase the pointer value.</p>
+<p>But, we get another way (the topic is about a stack). We use stacks to create a queue. The <code class="language-bash">Queue</code> structure itself will not have a storage variable, but will include two stacks: <code class="language-bash">input</code> and <code class="language-bash">output</code>. The <code class="language-bash">Push</code> on the <code class="language-bash">input</code> stack will be used like a <code class="language-bash">Push</code> of the <code class="language-bash">Queue</code>, and the <code class="language-bash">Pop</code> of <code class="language-bash">output</code>, like a <code class="language-bash">Pop</code> of <code class="language-bash">Queue</code>. But where are the remaining (a <code class="language-bash">Pop</code> of input and a <code class="language-bash">Push</code> of output) operations? They are responsible for the work of the <code class="language-bash">Queue</code>. Let's see what happens when we <code class="language-bash">Pop</code> the <code class="language-bash">Queue</code>:</p>
+<ul>
+<li>if the <code class="language-bash">output</code> stack is not empty, we just <code class="language-bash">Pop</code> it;</li>
+<li>if the <code class="language-bash">output</code> stack is empty:
+	<ul>
+<li>we <code class="language-bash">Pop</code> all elements from the <code class="language-bash">input</code> stack to the <code class="language-bash">output</code> stack;</li>
+<li>and only then we <code class="language-bash">Pop</code> the <code class="language-bash">output</code>.</li>
+</ul>
+</li>
+</ul>
+<p style="text-align: center;"><img alt="" height="682" name="02_queue.png" src="https://ucarecdn.com/7aab7147-85f2-4fa3-b4c1-82ddfe6e8572/" width="1742"/></p>
+<p>Let's get a code:</p>
+<pre><code class="language-go">// queue.go
+package main
+
+import "errors"
+
+type Queue struct {
+    input  Stack
+    output Stack
+}
+
+func (q *Queue) Push(value int) {
+    q.input.Push(value)
+}
+
+func (q *Queue) Pop() (int, error) {
+    outpuVal, outputErr := q.output.Pop()
+    if outputErr == nil { // if output stack is not empty
+        return outpuVal, nil // just return value
+    }
+
+    inputVal, inputErr := q.input.Pop()
+    if inputErr != nil { // if input stack is empty
+        return 0, errors.New("Queue is empty") // return the error
+    }
+
+    // if the output stack is empty but the input is not empty
+    for inputErr == nil { // while input stack not empty...
+        q.output.Push(inputVal)            // rearrange input to output
+        inputVal, inputErr = q.input.Pop() // and read again
+    }
+
+    return q.output.Pop() // and Pop the output
+}
+</code></pre>
+<p>And the <code class="language-bash">main.go</code> file:</p>
+<pre><code class="language-go">// main.go
+package main
+
+import "fmt"
+
+func main() {
+    var myQueue Queue
+
+    myQueue.Push(1)            // [1]   []
+    myQueue.Push(2)            // [1 2] []
+    popped, _ := myQueue.Pop() // []    [2]
+    myQueue.Push(3)            // [3]   [2]
+    myQueue.Push(4)            // [3 4] [2]
+
+    fmt.Println(popped)        //            1
+    fmt.Println(myQueue.Pop()) // [3 4] []   2 &lt;nil&gt;
+    fmt.Println(myQueue.Pop()) // []    [4]  3 &lt;nil&gt;
+    fmt.Println(myQueue.Pop()) // []    []   4 &lt;nil&gt;
+}</code></pre>
+<p>Now we can run the code. Comments are a display of the values of the <code class="language-bash">input</code> and <code class="language-bash">output</code> stack storages (the third value in the comment is the output of the <code class="language-bash">Pop</code> function). The order of output is the same as the input. The queue works!</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you learned how to implement one of the most common data structures in Go. An interesting detail is that you use a stack every time you work with your computer when you use the undo command (<code class="language-bash">Ctrl+Z</code> or <code class="language-bash">⌘+Z</code>). Every program writes a stack of operations, and when you cancel the last operation via the undo command, the program just pops the operation from the stack. As a programmer, you have used stacks when writing recursive algorithms (of course, not direct, but the executor creates a stack of recursive calls). And of course, stacks are used to create other useful structures (like a queue) of the digital world. Let's go back to the main points of the topic:</p>
+<ul>
+<li>the stack is a structure with <strong>LIFO</strong>-order to elements;</li>
+<li>the common stack structure contains storage and two operations: <code class="language-bash">Push</code> and <code class="language-bash">Pop</code>;</li>
+<li>the stack works only with the last element of the storage;</li>
+<li>the queue is a structure with <strong>FIFO</strong>-order to elements;</li>
+<li>the queue can be implemented with stacks.</li>
+</ul>

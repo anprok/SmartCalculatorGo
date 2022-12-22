@@ -1,0 +1,179 @@
+<h2>Parsing and formatting time</h2>
+<html><body><p>Let's recap what we already know about printing time in Go. There are two ways to do it. The first one is to print everything: <code class="language-go">1941-09-09 00:00:00 +0000 UTC</code>. This is informative but doesn't look pretty. The second way is to print only the date — <code class="language-go">1941 September 9</code>.</p>
+<p>However, what if we only wanted to print the year and month, or just hours and minutes? What if we are required to use a different format? For example, <code class="language-go">day/month/year</code>? Or use a different symbol as a separator? And how to create a time variable from a <code class="language-go">string</code>?</p>
+<p>In this topic, you will get answers to these questions and learn how to format time variables in Go.</p>
+<h5 id="year-month-and-day">Year, month, and day</h5>
+<p>The <code class="language-go">Date()</code> function returns a formatted date. You need to know that the returned date value is actually not a string, another special type, or struct. Calling the <code class="language-go">Date()</code> function on <code class="language-go">time.Now()</code> returns three variables: <code class="language-go">year</code> and <code class="language-go">day</code> of the <code class="language-go">int</code> type and <code class="language-go">month</code> of the <code class="language-go">time.Month</code> type.</p>
+<p>You can use it to format a date:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    now := time.Now()
+
+    year, month, day := now.Date()
+
+    fmt.Print("Original: ")
+    fmt.Println(now.Date())
+    fmt.Printf("Formatted: It's %v %v of %v\n", month, day, year)
+}
+
+// Output:
+// Original: 2022 April 14
+// Formatted: It's April 14 of 2022
+</code></pre>
+<p></p><div class="alert alert-primary">You may notice that the first output consists of two calls to <code class="language-go">Print</code> functions. This feature is provided by the multivariable output of <code class="language-go">Date()</code>. If we try to write print statements like <code class="language-go">fmt.Printf("%v", now.Date())</code> or <code class="language-go">fmt.Printf("%v %v %v", now.Date())</code>, we will get the following error: <code class="language-go">multiple-value t.Date() in single-value context</code>.</div><p></p>
+<h5 id="time-units">Time units</h5>
+<p>You already know how to get the year, month, and day; however, hours, minutes, etc. are not available yet. Remember that using the <code class="language-go">Date()</code> function returns only three variables — <code class="language-go">year</code>, <code class="language-go">month</code>, and <code class="language-go">day</code>. Now, what if you wanted to get <code class="language-go">year</code> separate from other variables? Or just <code class="language-go">month</code>? Or get hours, minutes, and seconds?</p>
+<p>The <code class="language-go">time.Time</code> type has functions that can help you get separated values. Moreover, you can get a day of the week (Monday, Tuesday, Wednesday, etc.) or day of the year (1st, 2nd, or 256th). Let's first take a look at how to get basic time units:</p>
+<ul>
+<li><code class="language-go">Year()</code>,</li>
+<li><code class="language-go">Month()</code>,</li>
+<li><code class="language-go">Day()</code>,</li>
+<li><code class="language-go">Hour()</code>,</li>
+<li><code class="language-go">Minute()</code>,</li>
+<li><code class="language-go">Second()</code>,</li>
+<li><code class="language-go">Nanosecond()</code>,</li>
+<li><code class="language-go">Location()</code>.</li>
+</ul>
+<p>It's easy to remember: just get the name of the time unit, make the capital first letter and write brackets at the end. By using these functions, you can get any information from <code class="language-go">time.Time</code>. </p>
+<p>Now, let's take a look at other useful functions:</p>
+<ul>
+<li><code class="language-go">YearDay()</code> returns a number of a day in the year;</li>
+<li><code class="language-go">Weekday()</code> returns the day of the week.</li>
+</ul>
+<p>All these methods don't need any arguments and are called on <code class="language-go">time.Time</code>:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    now := time.Now()
+
+    fmt.Println("Year:", now.Year())
+    fmt.Println("Month:", now.Month())
+    fmt.Printf("Time: %v:%v\n", now.Hour(), now.Minute())
+    fmt.Println("Weekday:", now.Weekday())
+}
+
+// Output:
+// Year: 2022
+// Month: April
+// Time: 11:35
+// Weekday: Monday
+</code></pre>
+<p>Be careful with <code class="language-go">Weekday()</code>. Even though the output is <code class="language-go">Monday</code>, it's only the result of formatting! Do you remember the value that the <code class="language-go">Duration</code> type prints? Even though its formatted output has the <code class="language-go">00h00m00s</code> format, it keeps time in nanoseconds as the <code class="language-go">int64</code> type. The <code class="language-go">Weekday()</code> function works similarly: it keeps an <code class="language-go">int</code> type value for each day of the week (<code class="language-go">0</code> is Sunday; <code class="language-go">6</code> is Saturday).</p>
+<p></p><div class="alert alert-primary">If you ever need to check what day is on the date, you'll have to compare <code class="language-go">Weekday()</code> with a built-in constant. The <code class="language-go">time</code> package contains a <a href="https://pkg.go.dev/time#Weekday" rel="noreferrer ugc nofollow noopener" target="_blank">set of constants</a> for all weekdays names; for example, Monday is <code class="language-go">time.Monday</code>. So if you want to know what <code class="language-go">Weekday()</code> is Monday, you need to use an expression like <code class="language-go">now.Weekday() == time.Monday</code>. </div><p></p>
+<h5 id="templates-and-format">Templates and format</h5>
+<p>You are already familiar with one of the most popular time layouts — <code class="language-go">1903-10-04 00:00:00 +0000 UTC</code>. It corresponds to the template named <strong>RFC3339</strong>. This template contains a string that determines how we must place the units of time (year, month, day, hour, etc.). The <code class="language-go">time</code> package contains <a href="https://pkg.go.dev/time#pkg-constants" rel="noopener noreferrer nofollow" target="_blank">constants</a> that keep strings of templates.</p>
+<p>Let's look at the strings that the two most common layouts contain and try to represent time using them:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    now := time.Now()
+
+    fmt.Println(time.RFC3339)
+    fmt.Println(time.Kitchen)
+
+    fmt.Println(now)
+    fmt.Println(now.Format(time.RFC3339))
+    fmt.Println(now.Format(time.Kitchen))
+}
+
+// Output:
+// 2006-01-02T15:04:05Z07:00
+// 3:04PM
+// 2022-04-05 17:10:03.933495 +0500 +05 m=+0.000062585
+// 2022-04-05T17:10:03+05:00
+// 5:10PM
+</code></pre>
+<p>The third, fourth, and fifth output strings contain the same variable but in different formats.</p>
+<p>Let's pay attention to the first two strings. These strings already contain some dates. It's not random: each number is a component of a layout. Using these numbers, you can create your time format. For example, the component <code class="language-go">2006</code> is a year value, <code class="language-go">2</code> or <code class="language-go">02</code> is a day.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    now := time.Now()
+
+    fmt.Println(now)
+    fmt.Printf("Date only: %v\n", now.Format("2006/1/2"))
+    fmt.Printf("Date only: %v\n", now.Format("2006/01/02"))
+    fmt.Printf("Time only: %v\n", now.Format("&gt;&gt;15|04&lt;&lt;"))
+    fmt.Printf("Seconds: %v\n", now.Format("5"))
+    fmt.Printf("Locale: %v\n", now.Format("Z07-00"))
+    fmt.Printf("Kitchen time: %v\n", now.Format("PM &lt;3&gt;|&lt;04&gt;"))
+}
+
+// Output:
+// 2022-04-15 09:40:59.471107 +0500 +05 m=+0.000071834
+// Date only: 2022/4/15
+// Date only: 2022/04/15
+// Time only: &gt;&gt;09|40&lt;&lt;
+// Seconds: 59
+// Locale: +05-00
+// Kitchen time: AM &lt;9&gt;|&lt;40&gt;</code></pre>
+<p></p><div class="alert alert-primary">Some components can start with zero. It means that in the case of one-symbol output, the value gets a zero at the beginning. You can see this difference in the first and second lines of the output.</div><p></p>
+<h5 id="from-string-to-time">From string to time</h5>
+<p>The reverse process (getting time from a string) is pretty straightforward. To convert a <code class="language-go">string</code> to a time value, the <code class="language-go">time</code> package contains a function called <code class="language-go">Parse</code>.</p>
+<p>The <code class="language-go">Parse</code> function takes two <code class="language-go">string</code>-type arguments: <code class="language-go">layout</code>, which is a certain time template, and <code class="language-go">value</code>, which contains the string we want to convert. We can obtain the template for <code class="language-go">layout</code> from <a href="https://pkg.go.dev/time#pkg-constants" rel="noopener noreferrer nofollow" target="_blank">constants</a> or generate it ourselves. <code class="language-go">Parse</code> returns two values: <code class="language-go">time.Time</code> and <code class="language-go">error</code>.</p>
+<p>We get an <code class="language-go">error</code> if the process of parsing ends with one of the following problems:</p>
+<ul>
+<li>A string contains invalid characters;</li>
+<li>A template and the input string have different layouts.</li>
+</ul>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    source := "1969-12-28"
+
+    LinusTime, err := time.Parse("2006-01-02", source)
+
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Println(LinusTime)
+    }
+
+    LinusTime, err = time.Parse(time.RFC3339, source)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Println(LinusTime)
+    }
+}
+
+// Output:
+// 1969-12-28 00:00:00 +0000 UTC
+// parsing time "1969-12-28" as "2006-01-02T15:04:05Z07:00": cannot parse "" as "T"
+</code></pre>
+<p>The first call to <code class="language-go">time.Parse()</code> runs without errors, however, the second one returns an error message. This happens because we're trying to convert the string <code class="language-go">"1969-12-28"</code>, which doesn't properly follow the <code class="language-go">RFC3339</code> layout (<code class="language-go">"2006-01-02T15:04:05Z07:00"</code>). As a result, we are getting the error message explaining that the <code class="language-go">source</code> string is missing the <code class="language-go">T</code> character!</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>Along with time units, months, and timezones, the <code class="language-go">time</code> package contains constants for weekdays and layout templates. You can represent time in Go by using:</p>
+<ul>
+<li>The output of the <code class="language-go">time.Date()</code> function;</li>
+<li>The output of the functions that get information about time units (<code class="language-go">Year()</code>, <code class="language-go">Month()</code>, <code class="language-go">Day()</code>, <code class="language-go">Hour()</code>, <code class="language-go">Minute()</code>, <code class="language-go">Second()</code>, <code class="language-go">Nanosecond()</code>, <code class="language-go">Location()</code>);</li>
+<li>The function <code class="language-go">Format()</code> with the desired template (from time constants or a format you created yourself).</li>
+</ul>
+<p>Finally, to convert a <code class="language-go">string</code> to a <code class="language-go">time.Time</code> value, you need to use the <code class="language-go">Parse()</code> function. </p>
+<p>Now let's practice what you've learned in this topic!</p></body></html>

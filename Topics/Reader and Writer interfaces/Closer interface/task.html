@@ -1,0 +1,8 @@
+<h2>Closer interface</h2>
+<p></p>
+<p>You need to implement <code class="language-go">io.Closer</code> interface.</p>
+<p>Let me remind you that it looks like this:</p>
+<pre><code class="language-go">type Closer interface {
+	Close() error
+}</code></pre>
+<p>The task is simple - you need to implement a method <code class="language-go">Close</code> for the <code class="language-go">FunnyBox</code> struct. This<code class="language-go">Close</code> method should display the phrase "Bey!" and returns <code class="language-go">nil</code> error.</p><br><b>Sample Input:</b><br><pre><code class="language-no-highlight"></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">Bey!</code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 8 seconds</font><br><br>

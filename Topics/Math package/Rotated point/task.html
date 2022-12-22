@@ -1,0 +1,15 @@
+<h2>Rotated point</h2>
+<p>You have coordinates of point, and an angle. You need to calculate the coordinates of the new point, which are obtained as a result of rotating (counterclockwise) the original point by a given angle. You can find a formula <a href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions" rel="noopener noreferrer nofollow" target="_blank">here</a>.</p>
+<p style="text-align: center;"><img alt="" height="252" name="rounded.png" src="https://ucarecdn.com/e5a0a4c7-76e7-4186-9577-78fcf03b4845/" width="258"/></p>
+<p>You will get three numbers: the <code class="java">x</code> and <code class="java">y</code> coordinates and the <code class="java">angle</code> in degrees. Calculate new coordinates and round them before the output.</p>
+<p></p><div class="alert alert-warning">You've encountered a challenging problem — time to put your thinking cap on 💡🧢! The task statement and HINT should help you solve it; however, if this problem is too complex, you can postpone it and come back later to try and solve it.</div>
+<p><button class="btn-sm btn-outline-secondary" onclick="getElementById('hint-1032').style.display='inline'">
+        Hint
+      </button>
+</p><div id="hint-1032" style="display:none;">
+<p>Correct formulas are:</p>
+<ul>
+<li><code class="java">x' = x*cos(angle) - y*sin(angle)</code></li>
+<li><code class="java">y' = x*sin(angle) + y*cos(angle)</code></li>
+</ul>
+<p></p></div><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">5 0 90<br></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">0 5<br></code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 8 seconds</font><br><br>

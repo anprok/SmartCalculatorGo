@@ -1,0 +1,31 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import "fmt"
+
+    func main() {
+        var i, num, sum int
+        fmt.Scan(&num)
+
+    ?:
+        if i%2 == 0 {
+            sum += ?
+        }
+        i++
+        if i <= num {
+            goto ?
+        }
+
+        fmt.Println(?)
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/20244#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 10 Dec 2022 14:31:59 UTC"
+record: -1

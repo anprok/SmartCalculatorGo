@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: "With the Seek method, you can set the offset for Read or Write methods"
+- text: "SeekStart, SeekCurrent and SeekEnd are only constants and you can use 0,\
+    \ 1 and 2 instead"
+- text: Seek method works only with Read method
+- text: "whence could be SeekStart, SeekCurrent or SeekEnd"
+files:
+- name: main.go
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23865#comment
+status: Solved
+record: -1
+local_check: false

@@ -1,0 +1,198 @@
+<h2>Reader and Writer interfaces</h2>
+<p>Package <code class="language-go">io</code> provides many useful interfaces. Among them are <code class="language-go">Reader</code>, <code class="language-go">Writer</code>, <code class="language-go">Closer</code> and <code class="language-go">Seeker</code>. In this topic, you will see where they are used and how you can use it in your projects.</p>
+<h5 id="reader-interface">Reader interface</h5>
+<p>This is how the interface is presented in the source code of the package:</p>
+<pre><code class="language-go">type Reader interface {
+    Read(p []byte) (n int, err error)
+}</code></pre>
+<p>This interface specifies a contract that the method reads data (no matter from where) into the slice of bytes <code class="language-go">p</code> and returns the <code class="language-go">n</code> number of bytes read. This number cannot exceed the size of the slice (<code class="language-go">len(p)</code>). Slice size must be set in advance. If something goes wrong, the method should return an error. If the data is all read, the method also returns an error, but a special one. This is <code class="language-go">io.EOF</code> (end of file). You must take this into account in your code in order to correctly complete the read operation.</p>
+<p>Look at the following example:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "io"
+    "strings"
+)
+
+const chunkSize = 12
+
+func main() {
+    reader := strings.NewReader("Supercalifragilisticexpialidocious")
+    p := make([]byte, chunkSize)
+    for chunkCount := 1; ; chunkCount++ {
+        n, err := reader.Read(p)
+        switch err {
+        case nil:
+            fmt.Println(chunkCount, " chunk: ", string(p[:n]))
+        case io.EOF:
+            fmt.Println("end of file")
+            return
+        default:
+            fmt.Println(err)
+            return
+        }
+    }
+}
+
+// Output: 
+// 1  chunk:  Supercalifra
+// 2  chunk:  gilisticexpi
+// 3  chunk:  alidocious  
+// end of file</code></pre>
+<p>After calling <code class="language-go">strings.NewReader</code> you get <code class="language-go">Reader</code> for your purposes. This is <code class="language-go">strings.Reader</code> type that implements <code class="language-go">io.Reader</code> interface. In the code, you use it like this: <code class="language-go">reader.Read(p)</code>.</p>
+<p>Let's move on. No matter what source of information you work with, with a regular string, with a file or a network connection, you should always have one approach.</p>
+<p>In the following source code snippet, you can also see the method <code class="language-go">Read</code>:</p>
+<pre><code class="language-go">file, err := os.Open("file.txt")
+if err != nil {
+    return err
+}
+
+buf := make([]byte, 1024)
+n, err := file.Read(buf)</code></pre>
+<p>Variable <code class="language-go">file</code> is by <code class="language-go">File</code> type from <code class="language-go">os</code> package. Remember the rule: "If it looks like a duck, and it quacks like a duck, then it is a duck". In other words, if it reads like an <code class="language-go">io.Reader</code>, then it is an <code class="language-go">io.Reader</code>.</p>
+<p>Let's check our guesses in the following code:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "io"
+    "os"
+    "strings"
+)
+
+func show(r io.Reader) error {
+    buf := make([]byte, 1024)
+    if _, err := r.Read(buf); err != nil {
+        return err
+    }
+    
+    fmt.Println(string(buf))
+    return nil
+}
+
+func main() {
+    file, _ := os.Open("file.txt")
+    if err := show(file); err != nil {
+        log.Fatal(err)
+    }
+
+    reader := strings.NewReader("hello")
+    if err := show(reader); err != nil {
+        log.Fatal(err)
+    }
+}
+
+// file.txt contents: "Hello from file!".
+// Output:
+// Hello from file!
+// hello
+</code></pre>
+<p>It works! <code class="language-go">os.File</code> and <code class="language-go">os.Reader</code> types both implement <code class="language-go">io.Reader</code> interface.</p>
+<h5 id="writer-interface">Writer interface</h5>
+<p>The <code class="language-go">io.Writer</code> interface has the following methods:</p>
+<pre><code class="language-go">type Writer interface {
+    Write(p []byte) (n int, err error)
+}</code></pre>
+<p>You have the same variables <code class="language-go">p</code>, <code class="language-go">n</code>, <code class="language-go">err</code> for <code class="language-go">Write</code> method. This interface specifies a contract that the method writes data from the slice <code class="language-go">p</code> and returns the <code class="language-go">n</code> number of bytes written. This number cannot exceed the size of the slice (<code class="language-go">len(p)</code>).</p>
+<p>Let's go a little further on this issue. You have <code class="language-go">Fprintln(...)</code> method in <code class="language-go">fmt</code> package:</p>
+<pre><code class="language-go">func Fprintln(w io.Writer, a ...any) (n int, err error)</code></pre>
+<p>You also have <code class="language-go">Buffer</code> type in <code class="language-go">bytes</code> package. It implements <code class="language-go">io.Writer</code> interface:</p>
+<pre><code class="language-go">func (b *Buffer) Write(p []byte) (n int, err error)</code></pre>
+<p>So you can use variables of <code class="language-go">bytes.Buffer</code> type as input for the <code class="language-go">Fprintln</code> method. You also can use the method <code class="language-go">Write</code> for your variable.</p>
+<p>Look at the example:</p>
+<pre><code class="language-go">package main
+
+import (
+    "bytes"
+    "fmt"
+)
+
+func main() {
+    var b bytes.Buffer
+
+    fmt.Fprintln(&amp;b, "Winnie the Pooh: 'A hug is always the right size'.")
+    fmt.Println(b.String())
+
+    b.Write([]byte("Mary Poppins: 'Just a spoonful of sugar helps the medicine go down'."))
+    fmt.Println(b.String())
+}
+
+// Output:
+// Winnie the Pooh: 'A hug is always the right size'.
+// 
+// Winnie the Pooh: 'A hug is always the right size'.                  
+// Mary Poppins: 'Just a spoonful of sugar helps the medicine go down'.</code></pre>
+<p>Because <code class="language-go">Buffer</code> type implements <code class="language-go">io.Writer</code> interface, you can use variable <code class="language-go">b</code> as input for <code class="language-go">fmt.Fprintln</code>, because this method uses <code class="language-go">Write</code> inside.</p>
+<h5 id="seeker-interface">Seeker interface</h5>
+<p>Another useful interface available in the <code class="language-go">io</code> package is <code class="language-go">io.Seeker</code>:</p>
+<pre><code class="language-go">type Seeker interface {
+    Seek(offset int64, whence int) (int64, error)
+}</code></pre>
+<p>With the <code class="language-go">Seek</code> method, you can set the offset for <code class="language-go">Read</code> or <code class="language-go">Write</code> methods. Where whence could be <code class="language-go">SeekStart</code>, <code class="language-go">SeekCurrent</code> or <code class="language-go">SeekEnd</code>. The names of the constants speak for themselves (offset from start, current position or end of the source).</p>
+<p>Look at the following example:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "io"
+    "strings"
+)
+
+func main() {
+    quote := "Someplace where there isn't any trouble."
+    offset := 16
+    reader := strings.NewReader(quote)
+
+    reader.Seek(int64(offset), io.SeekStart)
+
+    b := make([]byte, len(quote)-offset-1)
+    reader.Read(b)
+    fmt.Println(string(b))
+}
+
+// Output:
+// there isn't any trouble</code></pre>
+<p>You want to start reading not from the beginning, but from a certain word. You are looking for the position of this word in the sentence, and set it as the offset from the beginning of the string with the <code class="language-go">Seek</code> method. Furthermore, you can calculate the size of the buffer because you know the size of the original string literal and the offset (<code class="language-go">len(quote)-offset-1</code>). For the beauty of the output, you do not read the last character (dot in our case), so you do <code class="language-go">-1</code> for buffer size.</p>
+<h5 id="closer-interface">Closer interface</h5>
+<p>If you write somewhere, you occupy a resource. If this resource is required by others, then it is necessary to release it when it is no longer needed. In this case, it is recommended to use the <code class="language-go">io.Closer</code> interface:</p>
+<pre><code class="language-go">type Closer interface {
+    Close() error
+}</code></pre>
+<p>Method <code class="language-go">Close</code> is implementation specific. For example, you can close network protocol or database connection, logger or a specific session.</p>
+<p>Example of using the <code class="language-go">Close</code> method for <code class="language-go">File</code> type:</p>
+<pre><code class="language-go">file, err := os.Open("input.txt")	
+if err != nil {
+    return err
+}
+
+data, err := io.ReadAll(file)
+if err != nil {
+    return err
+}
+
+file.Close()
+
+</code></pre>
+<h5 id="combination-of-interfaces">Combination of interfaces</h5>
+<p>Sometimes you need to specify that your type implements several interfaces, for example, it is a <code class="language-go">Reader</code> and a <code class="language-go">Writer</code> at the same time. For this purpose, you have these types of interfaces in <code class="language-go">io</code> package, too.</p>
+<p>Let's look at the <code class="language-go">ReadWriter</code> interface:</p>
+<pre><code class="language-go">type ReadCloser interface {
+    Reader
+    Closer
+}</code></pre>
+<p>You use embedding of interfaces, so this notation is similar to:</p>
+<pre><code class="language-go">type ReadCloser interface {
+    Read(p []byte) (n int, err error)
+    Write(p []byte) (n int, err error)
+}</code></pre>
+<p>You can find more of these combinations in the <code class="language-go">io</code> package:</p>
+<ul>
+<li>ReadCloser</li>
+<li>WriteCloser</li>
+<li>ReadSeeker</li>
+<li>ReadSeekCloser</li>
+<li>…</li>
+</ul>
+<h5 id="conclusion">Conclusion</h5>
+<p>You should now feel comfortable working with interfaces from the <code class="language-go">io</code> package. Remember that input and output is not only about files, it can be ordinary string literals, responses from protocols in various formats (http, for example), databases, streams, etc.</p>

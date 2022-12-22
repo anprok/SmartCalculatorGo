@@ -1,0 +1,18 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"fmt\"\n    \"time\"\n)\n\nfunc main() {\n\
+    \    var year, month, day int\n\n    // Chicken born time:\n    fmt.Scan(&year,\
+    \ &month, &day)\n    chicken := time.Date(?, time.Month(month), ?, 0, 0, 0, 0,\
+    \ time.UTC)\n\n    // Egg born time:\n    fmt.Scan(&year, &?, ?)\n    egg := time.Date(?,\
+    \ ?, ?, 0, 0, 0, 0, time.UTC)\n\n    switch {\n\tcase chicken.Before(?):\n\t\t\
+    fmt.Println(\"Chicken is first!\")\n\tcase chicken.?(egg):\n\t\tfmt.Println(\"\
+    Egg is first!\")\n\tdefault:\n\t\tfmt.Println(\"Time collapsed\")\n\t}\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/19301#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 17:21:19 UTC"
+record: -1

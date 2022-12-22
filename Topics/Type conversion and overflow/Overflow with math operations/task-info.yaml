@@ -1,0 +1,26 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import "fmt"
+
+    func main() {
+        var num1, num2 int8
+        fmt.Scan(&num1, &num2)
+
+        if int(? + ?) != int(?) + int(?) {
+            fmt.Println("+")
+        }
+
+        // add the same checks for "-" and "*" below:
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18716#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Fri, 02 Dec 2022 20:42:25 UTC"
+record: -1

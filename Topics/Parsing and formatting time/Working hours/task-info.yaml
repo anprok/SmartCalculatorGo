@@ -1,0 +1,30 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"fmt\"\n\t\"log\"\n\t\"time\"\n)\n\nconst (\n\
+    \tHoursPerDay = 24\n\tDateLayout  = \"2006-01-02\"\n)\n\nfunc main() {\n\tvar\
+    \ startDateString, endDateString string\n\tvar salaryPerHour, workingTime uint64\n\
+    \n\tfmt.Scan(&startDateString, ?) // Read the start date and the end date\n\t\
+    fmt.Scan(?, ?) // Read the salary per hour and the working time\n\n\tstartDate,\
+    \ err := time.Parse(DateLayout, startDateString)\n\tif err != nil {\n\t\tlog.Fatal(err)\n\
+    \t}\n\n\tendDate, err := time.Parse(?, ?) // Parse the end date of the period\n\
+    \tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\n\t// The calculateSalary() function\
+    \ outputs the total salary for the given period:\n\tcalculateSalary(startDate,\
+    \ endDate, salaryPerHour, workingTime)\n}\n\n// Write the required code to finish\
+    \ the implementation of the calculateSalary() function:\nfunc calculateSalary(startDate\
+    \ time.Time, endDate time.Time, salaryPerHour uint64, workingTime uint64) {\n\t\
+    var totalSalary uint64\n\n\tfor !startDate.Equal(endDate) {\n\t\tweekday := startDate.?()\
+    \ // What function returns the day of the week?\n\t\tstartDate = startDate.Add(time.Hour\
+    \ * HoursPerDay)\n\n\t\tsalaryPerDay := salaryPerHour * ? // Calculate the salary\
+    \ per day\n\n\t\tif weekday == time.Wednesday || weekday == time.? || weekday\
+    \ == time.? {\n\t\t\tcontinue\n\t\t}\n\n\t\tif weekday == time.Friday {\n\t\t\t\
+    salaryPerDay -= salaryPerHour\n\t\t}\n\n\t\ttotalSalary += ? // Add the daily\
+    \ salary to the total salary\n\t}\n\tfmt.Println(\"Total:\", totalSalary)\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/19606#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 18:41:19 UTC"
+record: -1

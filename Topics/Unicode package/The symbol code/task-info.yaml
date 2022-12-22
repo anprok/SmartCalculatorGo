@@ -1,0 +1,21 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import "fmt"
+
+    func main() {
+        var char rune
+        fmt.Scan(&char)
+        fmt.Println(?(?))
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23095#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 22:17:49 UTC"
+record: -1

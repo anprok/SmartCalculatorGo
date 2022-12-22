@@ -1,0 +1,15 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n\t\"fmt\"\n    \"math\"\n)\n\nfunc main() {\n\t\
+    var radians float64\n\tfmt.Scanln(&radians)\n\n\t// Please use any of the above\
+    \ identities to calculate the 'cotangent' below:\n\tcotangent := ?\n\n\tfmt.Printf(\"\
+    %.2f\", cotangent)\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18436#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 10 Dec 2022 14:07:22 UTC"
+record: -1

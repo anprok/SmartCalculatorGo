@@ -1,0 +1,47 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import (
+        "fmt"
+        "errors"
+    )
+
+    func main() {
+        var word string
+        // the Stack and the Queue are already defined
+        var stackSolver Stack
+        var queueSolver Queue
+
+        fmt.Scan(&word)
+
+        for _, char := range word {
+            ?
+            ?
+        }
+
+        for {
+            ?
+            ?
+
+            if ? {
+                fmt.Println("Palindrome")
+                break
+            }
+
+            if ? {
+                fmt.Println("Not palindrome")
+                break
+            }
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/24213#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 10 Dec 2022 21:58:23 UTC"
+record: -1

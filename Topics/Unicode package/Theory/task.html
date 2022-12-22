@@ -1,0 +1,124 @@
+<h2>Unicode package</h2>
+<html><body><p>Each symbol of this text has a number representation. This is because every computer system handles numbers. To display a symbol, a computer finds an associated number in the encoding table. Older PCs contain their own character encoding table. However, the growth of the number of computers and the evolution of the network need a universal standard for encoding symbols.</p>
+<p>So, if the encoding table exists, it needs tools to work. Let's get to know, how Golang works with Unicode symbols.</p>
+<h5 id="the-basics-of-the-unicode">The basics of the Unicode</h5>
+<p>The base type of Golang for a Unicode symbol is a <code class="language-go">rune</code>. You may recall, that the <code class="language-go">rune</code> type is an alias for a type <code class="language-go">int32</code>. The <code class="language-go">rune</code> type value is a single character, to create that, it is necessary to use single quotes:</p>
+<pre><code class="language-go">fmt.Println('a') // 97</code></pre>
+<p></p><div class="alert alert-primary">The number output of <code class="language-go">fmt.Println('a')</code> is an effect of the alias for the <code class="language-go">int32</code> type.</div>
+<p>The <code class="language-go">int32</code> type defines a memory limit for a single Unicode symbol (32 bits or 4 bytes). Let's try to output a single Unicode symbol from a <code class="language-go">string</code> type:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    symbol := "µ"
+
+    fmt.Println(symbol[0])  // 194
+    fmt.Println(symbol[:2]) // µ
+}
+</code></pre>
+<p>Do you remember, what strings in Golang are represented like a slice of bytes (<code class="language-go">[]byte</code>)? If you try to get a value by using index (with square brackets) you get a value of byte, placed at that index. To read a single Unicode symbol, you need to get a slice of bytes. At the second <code class="language-go">Println</code> statement we take a slice of first 2 bytes of string, and obtain the correct symbol at the output.</p>
+<h5 id="handle-unicode-symbols">Handle Unicode symbols</h5>
+<p>You already see that the slice is a not good idea if you want to read a string symbol by symbol. To get symbols, you can use the <code class="language-go">range</code> iterator. The example below shows the difference between a regular numeric iterator and the <code class="language-go">range</code> applied to a string:</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    unicodeString := "µ¶"
+
+    fmt.Println("Regular iterator:")
+    for i := 0; i &lt; len(unicodeString); i++ {
+        fmt.Printf("%d: %q\n", i, unicodeString[i])
+    }
+
+    fmt.Println("Range iterator:")
+    for i, char := range unicodeString {
+        fmt.Printf("%d: %q\n", i, char)
+    }
+}
+
+// Output:
+// Regular iterator:
+// 0: 'Â'
+// 1: 'µ'
+// 2: 'Â'
+// 3: '¶'
+// Range iterator:
+// 0: 'µ'
+// 2: '¶'</code></pre>
+<p>Pay attention to the indexes. The <code class="language-go">range</code> iterator reads bytes until the character code appears, but the index is the same as a regular iterator.</p>
+<h5 id="the-symbol-definition">The symbol definition</h5>
+<p>Symbols of the Unicode can be separated by attributes. Each attribute combines characters into ranges. It can be digits, whitespaces, control symbols, alphabetical symbols etc. Ranges are not enclosed. One symbol can be attached to a lot of ranges. Most of known Unicode ranges are defined at <code class="language-go">unicode package</code> variables (you can find a complete list of ranges at the <a href="https://pkg.go.dev/unicode#pkg-variables" rel="noopener noreferrer nofollow" target="_blank">documentation</a>).</p>
+<p>The <code class="language-go">unicode package</code> have tools to define which ranges are contain a symbol:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "unicode"
+)
+
+func main() {
+    fmt.Println(unicode.IsDigit('1'))    // true
+    fmt.Println(unicode.IsUpper('a'))    // false
+    fmt.Println(unicode.IsLower('a'))    // true
+    fmt.Println(unicode.IsControl('\n')) // true
+    fmt.Println(unicode.IsSpace('\n'))   // true
+}</code></pre>
+<p>Some basic ranges have a method:</p>
+<ul>
+<li><code class="language-go">IsDigit</code> method search in Digit range (<code class="language-go">0-9</code>);</li>
+<li><code class="language-go">IsUpper</code> and <code class="language-go">IsLower</code> methods search by the case of symbol (<code class="language-go">A-Z</code> and <code class="language-go">a-z</code>);</li>
+<li><code class="language-go">IsControl</code> method search in control characters (<code class="language-go">\0\e\r</code>);</li>
+<li><code class="language-go">IsSpace</code> method search in whitespaces (<code class="language-go"> \n\t</code>);</li>
+<li>an other functions you can find in the <a href="https://pkg.go.dev/unicode#IsControl" rel="noopener noreferrer nofollow" target="_blank" title="https://pkg.go.dev/unicode#IsControl">documentation</a>.</li>
+</ul>
+<p>The signature on each method is the same. The method gets the <code class="language-go">rune</code> variable or the string enclosed by single quotes (<code class="language-go">''</code>), and return a <code class="language-go">bool</code> variable (<code class="language-go">true</code> — the symbol is in the range; <code class="language-go">false</code> — the symbol is out of range).</p>
+<p>If you are read the documentation you can find that a count of ranges is more than count of definition methods. The most commonly used ranges have an own method. To define a specific range, you can use the In method:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "unicode"
+)
+
+func main() {
+    fmt.Println(unicode.In('ǈ', unicode.Latin)) // true
+}</code></pre>
+<p>The first argument is a <code class="language-go">rune</code> variable, the second variable is a unicode range. If the symbol included in range, the method returns <code class="language-go">true</code>, otherwise <code class="language-go">false</code>.</p>
+<h5 id="the-symbol-conversion">The symbol conversion</h5>
+<p>The second type of tool is used to convert symbol cases in the correct way:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "unicode"
+)
+
+func main() {
+    fmt.Println(string(unicode.ToLower('A'))) // a
+    fmt.Println(string(unicode.ToUpper('a'))) // A
+    fmt.Println(string(unicode.ToTitle('a'))) // A
+}</code></pre>
+<p>All functions have the same input (a <code class="language-go">rune</code> variable or symbol inside single quotes) and the same output (a <code class="language-go">rune</code> variable in the chosen case). <code class="language-go">ToLower</code> and <code class="language-go">ToUpper</code> are intuitive methods: first convert a symbol to lowercase, second to upper. But the <code class="language-go">ToTitle</code> method causes the question: if we can pass to method only a single symbol, which difference between <code class="language-go">ToTitle</code> and <code class="language-go">ToUpper</code> methods? Let's watch the example below:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "unicode"
+)
+
+func main() {
+    fmt.Println(string(unicode.ToLower('ǈ'))) // ǉ
+    fmt.Println(string(unicode.ToUpper('ǈ'))) // Ǉ
+    fmt.Println(string(unicode.ToTitle('ǈ'))) // ǈ
+}</code></pre>
+<p>Here is a single symbol of the <code class="language-go">Latin</code> range: <code class="language-go">ǈ</code>. And it consists of two symbols (it's not a joke, it's a <a href="https://unicode-table.com/en/01C9/" rel="noopener noreferrer nofollow" target="_blank" title="https://unicode-table.com/en/01C9/">standard</a>).</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>Golang, like any other modern language, has tools for working with Unicode characters. A unified coded table helps people and computers interact with each other. Let's repeat what tools Golang uses to process Unicode:</p>
+<ul>
+<li>the Unicode symbol uses a <code class="language-go">rune</code> type of variable;</li>
+<li>the Unicode symbols separated by ranges, stored in <code class="language-go">unicode package</code> variables;</li>
+<li>the <code class="language-go">unicode package</code> contain methods to specify the range of the symbol;</li>
+<li>the <code class="language-go">unicode package</code> contain methods to convert the case of a symbol in the correct way.</li>
+</ul></body></html>

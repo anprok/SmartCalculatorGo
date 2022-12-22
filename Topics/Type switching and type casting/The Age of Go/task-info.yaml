@@ -1,0 +1,29 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import "fmt"
+
+    func main() {
+        var age interface{} = 13
+        switch age.(type) {
+        case ???:
+           //put your code here
+        case ???:
+           //put your code here
+        case ???:
+           //put your code here
+        default:
+           //put your code here
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/22402#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Wed, 21 Dec 2022 16:18:55 UTC"
+record: -1

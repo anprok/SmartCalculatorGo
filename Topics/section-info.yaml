@@ -1,0 +1,15 @@
+content:
+- Type conversion and overflow
+- Slice expressions
+- Functions
+- Debugging Go code in GoLand
+- Unicode package
+- Math package
+- Goto and labels
+- Using stack in Go
+- Working with slices
+- Type switching and type casting
+- Working with time
+- Parsing and formatting time
+- Reader and Writer interfaces
+- Introduction to Regexp package

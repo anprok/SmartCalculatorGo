@@ -1,0 +1,155 @@
+<h2>Working with time</h2>
+<html><body><p>Time is not a primitive type of variable. It's a complex value that contains information about various intervals of time: hours, minutes seconds, etc. In this topic, you will learn how the time variable works in Golang, how to compare time, and what to do if you want to change the time.</p>
+<h5 id="time-initialization">Time initialization</h5>
+<p>First of all, you need to know that time is a structured variable. The library <code class="language-go">time</code> has a <code class="language-go">struct</code> to represent time. It's called <code class="language-go">time.Time</code>. This structure keeps time in nanoseconds, and it has a few methods that can help you in your projects. This topic focuses on how basic functions work, and if you'd like additional information, you can look at the <a href="https://pkg.go.dev/time" rel="noopener noreferrer nofollow" target="_blank">official golang documentation</a>.</p>
+<p>You can use the similar syntax (like <code class="language-go">var</code> or <code class="language-go">:=</code>) to initialize a <code class="language-go">time.Time</code> variable, as you do with primitive types. However, it has some interesting features: <code class="language-go">time.Time</code> is a structure with private fields, which means that you can initialize it only with a default value. And the default is the first of January of the first year at 00:00 o'clock by UTC: <code class="language-go">0001-01-01 00:00:00 +0000 UTC</code>.</p>
+<p>To create a variable with the time you need, the correct way is to use the function <code class="language-go">time.Date()</code>. It has eight arguments and returns a new <code class="language-go">struct</code>. In addition, you can use it to print.</p>
+<p>Let's see what arguments <code class="language-go">time.Date()</code> takes:</p>
+<ol>
+<li>year</li>
+<li>month</li>
+<li>day</li>
+<li>hour</li>
+<li>minute</li>
+<li>second</li>
+<li>nanosecond</li>
+<li>location (timezone)</li>
+</ol>
+<p>If you just want to get the current time, you don't need to write it yourself. Use the <code class="language-go">time.Now()</code> function. It doesn't require any arguments and returns the <code class="language-go">time.Time</code> structure.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    //                    YEAR   MONTH    D  H  M  S  nS Location
+    starWars := time.Date(1977, time.May, 4, 0, 0, 0, 0, time.UTC)
+
+    fmt.Println(starWars)
+    fmt.Println(starWars.Date())
+    fmt.Println(time.Now())
+}
+
+// Output:
+// 1977-05-04 00:00:00 +0000 UTC
+// 1977 May 4
+// 2022-04-05 15:51:03.410972 +0500 +05 m=+0.000249376
+</code></pre>
+<p></p><div class="alert alert-primary"> Pay attention to the <code class="language-go">time.Date()</code> variable initialization. To represent month and location, you should use built-in constants and functions. If you want to get a month's name from its number, the function <code class="language-go">time.Month()</code> will help you. For example, <code class="language-go">time.Month(10)</code> will return <code class="language-go">time.October</code>. </div><p></p>
+<h5 id="time-comparison">Time comparison</h5>
+<p>What if you wanted to compare time variables? You could try to use standard operators like <code class="language-go">&gt;, &lt;, &gt;=, &lt;=, ==</code>. All of them, except <code class="language-go">==</code>, would not work. The "equal" operator can compare two variables of the same type, but since we are talking about structures, it's not the correct way.</p>
+<p>Naturally, the time library contains features that can help you solve this problem. There are three functions: <code class="language-go">Before</code>, <code class="language-go">After</code>, and <code class="language-go">Equal</code>. All of them are called by source time, take the compared time, and return a <code class="language-go">boolean</code> value.</p>
+<ul>
+<li><code class="language-go">Before</code> returns <code class="language-go">true</code> if the original date has happened before the date it's compared with</li>
+<li><code class="language-go">After</code> returns <code class="language-go">true</code> if the original date has happened after the date it's compared with</li>
+<li><code class="language-go">Equal</code> returns <code class="language-go">true</code> if the original and compared dates are the same</li>
+</ul>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    darwin, _ := time.LoadLocation("Australia/Darwin")
+
+    presentMcFly := time.Date(1985, time.October, 26, 1, 20, 0, 0, time.UTC)
+    futureMcFly := time.Date(1955, time.November, 12, 22, 4, 0, 0, time.UTC)
+
+    fmt.Println(presentMcFly.Before(futureMcFly))
+    fmt.Println(presentMcFly.After(futureMcFly))
+    fmt.Println(presentMcFly.Equal(futureMcFly))
+
+    futureMcFlyInDarwin := time.Date(1955, time.November, 13, 7, 34, 0, 0, darwin)
+
+    fmt.Println(futureMcFly.Equal(futureMcFlyInDarwin))
+    fmt.Println(futureMcFly == futureMcFlyInDarwin)
+}
+
+// Output:
+// false
+// true
+// false
+// true
+// false
+</code></pre>
+<p>As you see in the code above, the date stored in <code class="language-go">presentMcFly</code> happened after the <code class="language-go">futureMcFly</code> date. Hence, the expected output is:</p>
+<ul>
+<li><code class="language-go">Before</code> called on <code class="language-go">presentMcFly</code> will return <code class="language-go">false</code></li>
+<li><code class="language-go">After</code> called on <code class="language-go">presentMcFly</code> will return <code class="language-go">true</code></li>
+<li><code class="language-go">Equal</code> called on <code class="language-go">presentMcFly</code> will return <code class="language-go">false</code></li>
+</ul>
+<p></p><div class="alert alert-primary"> The last two outputs in the code above show the difference between the <code class="language-go">==</code> operator and the <code class="language-go">time.Equal()</code> function. The variable <code class="language-go">futureMcFlyInDarwin</code> sends McFly to Australia, to the timezone of Darwin. If you try to compare <code class="language-go">futureMcFlyInDarwin</code> with <code class="language-go">futureMcFly</code> the usual way (using <code class="language-go">==</code>), it will return <code class="language-go">false</code>. On the other hand, the <code class="language-go">time.Equal()</code> will return <code class="language-go">true</code>, because the date and the time are the same, just in a different timezone. </div><p></p>
+<h5 id="operations-with-time">Operations with time</h5>
+<p>Like usual comparison operators that don't work properly with time variables, the usual expression operators (<code class="language-go">+ - / *</code>) wouldn't work on them either. However, Golang has some methods to modify time variables. There are not a lot of them, though: only addition and subtraction.</p>
+<p>Before continuing, we need to say a few words about the difference in time. In Golang, time difference is a specific type called <code class="language-go">Duration</code>, which stores value in nanoseconds (just like <code class="language-go">time.Time</code>). However, nanoseconds are not an easy-to-use feature if you need to set another value. Thus, for convenience, Golang has constants equivalent to the most-used time intervals: nanosecond, microsecond, millisecond, second, minute, and hour.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    twoSecond := time.Millisecond*1000 + time.Second
+    sevenDays := time.Hour * 24 * 7
+    oneYear := time.Hour * 24 * 365
+    threeYearsAndTwoMonths := oneYear*3 + time.Hour*24*30
+
+    fmt.Println(twoSecond)
+    fmt.Println(sevenDays)
+    fmt.Println(oneYear)
+    fmt.Println(threeYearsAndTwoMonths)
+}
+
+// Output:
+// 2s
+// 168h0m0s
+// 8760h0m0s
+// 27000h0m0s
+</code></pre>
+<p></p><div class="alert alert-primary"> Pay attention to the output: <code class="language-go">Duration</code> has a formatted output, but it uses an integer value with all other operations. If you want to get 10 seconds, for example, just take the <code class="language-go">time.Second</code> constant and multiply it by ten. </div><p></p>
+<p>Let's return now to the addition and subtraction of time. Corresponding features are called <code class="language-go">Add</code> and <code class="language-go">Sub</code>. Both functions are called on the source variable, but:</p>
+<ul>
+<li><code class="language-go">Add</code> returns a new <code class="language-go">time.Time</code> value that differs from the original value by the given interval;</li>
+<li><code class="language-go">Sub</code> takes the <code class="language-go">time.Time</code> variable and returns the difference between it and the second provided value as a <code class="language-go">Duration</code> type.</li>
+</ul>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    CopernicusBDay := time.Date(1473, time.February, 19, 0, 0, 0, 0, time.UTC)
+    NewtonBDay := CopernicusBDay.Add(time.Hour * 1489080)
+    EinsteinBDay := time.Date(1879, time.March, 14, 0, 0, 0, 0, time.UTC)
+
+    fmt.Println("Timeline:")
+    fmt.Printf("Nicolaus Copernicus: %v\n", CopernicusBDay)
+    fmt.Printf(" | %v\n", NewtonBDay.Sub(CopernicusBDay))
+    fmt.Printf("Isaac Newton: %v\n", NewtonBDay)
+    fmt.Printf(" | %v\n", EinsteinBDay.Sub(NewtonBDay))
+    fmt.Printf("Albert Einstein: %v\n", EinsteinBDay)
+}
+
+// Output:
+// Timeline:
+// Nicolaus Copernicus: 1473-02-19 00:00:00 +0000 UTC
+//  | 1489080h0m0s
+// Isaac Newton: 1643-01-04 00:00:00 +0000 UTC
+//  | 2070384h0m0s
+// Albert Einstein: 1879-03-14 00:00:00 +0000 UTC
+</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p>The main thing about <code class="language-go">time.Time</code> is that it's not a simple variable type. It's a complex structure that contains a lot of information about time. To work with it, you need to know certain special features:</p>
+<ul>
+<li>to initialize the time variable, use the <code class="language-go">time.Date</code> or <code class="language-go">time.Now</code> functions;</li>
+<li>the structure <code class="language-go">time.Time</code> has its own comparison operations (<code class="language-go">Before</code>, <code class="language-go">After</code>, and <code class="language-go">Equal</code>);</li>
+<li>the structure <code class="language-go">time.Time</code> supports two modifying operations <em>—</em> addition and subtraction (<code class="language-go">Add</code> and <code class="language-go">Sub</code>, respectively);</li>
+<li><code class="language-go">time.Time</code> has a set of constants for time intervals, names of months, and timezones.</li>
+</ul></body></html>

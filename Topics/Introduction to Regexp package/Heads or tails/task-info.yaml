@@ -1,0 +1,16 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport (\n    \"fmt\"\n    \"regexp\"\n)\n\nfunc main() {\n\
+    \    var source string\n    fmt.Scan(&source)\n\n    reHeads := regexp.MustCompile(`?`)\n\
+    \    reTails := regexp.?(?)\n\n    heads := reHeads.?(?)\n    tails := reTails.?(?)\n\
+    \n    switch {\n\tcase heads && tails:\n\t\t?\n\tcase heads:\n\t\t?\n\tcase tails:\n\
+    \t\t?\n\tdefault:\n\t\tfmt.Println(\"none\")\n\t}\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23533#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Thu, 22 Dec 2022 13:06:23 UTC"
+record: -1

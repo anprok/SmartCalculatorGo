@@ -1,0 +1,37 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import (
+        "fmt"
+        "unicode"
+    )
+
+    func main() {
+        var word string
+        fmt.Scan(&word)
+
+        isGreek := false
+        for _, char := ? word {
+            if unicode.?(char, ?) {
+                isGreek = true
+                break
+            }
+        }
+
+        if isGreek {
+            fmt.Println(?)
+        } else {
+            fmt.Println("false")
+        }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23097#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 22:21:45 UTC"
+record: -1

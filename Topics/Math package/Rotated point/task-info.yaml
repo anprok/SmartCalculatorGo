@@ -1,0 +1,38 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: |-
+    package main
+
+    import (
+        "fmt"
+        "math"
+    )
+
+    const  ToRadians = math.Pi / 180
+
+    func main() {
+        var x, y, angle float64
+
+        fmt.Scan(&x, &y, &angle)
+
+        angle *= ToRadians
+
+        // Calculate the new coordinates below:
+        newX := ?
+        newY := ?
+
+        // Round newX and newY to the nearest integer:
+        newX = math.?
+        newY = math.?
+
+        fmt.Println(?, ?)
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23546#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 10 Dec 2022 14:11:35 UTC"
+record: -1

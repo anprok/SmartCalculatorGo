@@ -1,0 +1,19 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nconst (\n\tmaxTax    = 15\n\tmiddleTax\
+    \ = 10\n\tlowTax    = 5\n\n\tmaxLimit    = 100_000\n\tmiddleLimit = 10_000\n)\n\
+    \nfunc main() {\n\tvar amount int\n\tfmt.Scanln(&amount)\n\n\ttax := amount\n\t\
+    switch {\n\tcase amount > maxLimit:\n\t\ttax -= (amount - maxLimit) * maxTax /\
+    \ 100\n\t\tamount = maxLimit\n\t\tfallthrough\n\tcase amount > middleLimit:\n\t\
+    \ttax -= (amount - middleLimit) * 100 / middleTax\n\t\tamount = middleLimit\n\t\
+    \tfallthrough\n\tdefault:\n\t\ttax -= amount * lowTax / 100\n\t}\n\tfmt.Println(tax)\n\
+    }"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23125#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 08:31:52 UTC"
+record: -1

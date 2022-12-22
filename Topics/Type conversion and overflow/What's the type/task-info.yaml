@@ -1,0 +1,20 @@
+type: code
+custom_name: What's the type?
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\nconst (\n    MaxUint8  = 1<<8 - 1\n   \
+    \ MaxUint16 = 1<<16 - 1\n    MaxUint32 = 1<<32 - 1\n    MaxUint64 = 1<<64 - 1\n\
+    )\n\nfunc main() {\n    var source float64\n\tfmt.Scan(&source)\n\n    // check\
+    \ if the source value can be converted to int8 value without overflow\n    if\
+    \ source < float64(MaxUint8) {\n        fmt.Println(\"uint8\")\n    }\n\n    //\
+    \ add the same check for 16, 32, 64 bits...\n\n    // check if we the source value\
+    \ is out of the range for all types\n    if float64(?) < source {\n        fmt.Println(\"\
+    unsupported type\")\n    }\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18715#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Fri, 02 Dec 2022 20:33:32 UTC"
+record: -1

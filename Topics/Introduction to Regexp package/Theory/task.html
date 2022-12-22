@@ -1,0 +1,277 @@
+<h2>Introduction to Regexp package</h2>
+<html><body><p>Let's talk about digital data. Every day we use the internet: we communicate with other people, buy things, work, play, and generally do many interesting activities. All our actions generate a lot of data. It can look like a primitive string like <code class="language-go">Hello!</code> or a formatted string like <code class="language-go">&lt;b&gt;Hello!&lt;/b&gt;</code>. It can also be placed into the request body: <code class="language-go">?message=Hello!</code> or <code class="language-go">{"message": "Hello!"}</code>. And from all of these different options, you need to get some information.</p>
+<p>Let's look at a simple task: you need to retrieve the information contained between HTML tags. Of course, you can try to calculate the distance between tags, get indexes where the message starts and ends, and finally get the message. But what if you have to deal with other tags? Or the message has changed? Or you get a tree of HTML tags? There are too many possible options of this task to examine! And even harder it would be to make a code that could handle them all. But there is a solution. Let's dive into the wonderland of regular expressions!</p>
+<h5 id="the-pattern-of-words">The pattern of words</h5>
+<p>Let's get back to the HTML tags examples later. Now, let's look at a more common task with files.</p>
+<p>Digital data has a lot of formats to represent information, and these formats have a lot of rules on how to keep or transfer information. For example, open any folder on your computer and you will see that a lot of files have a name and an extension divided by a dot. Let's try to create a string template of a filename.</p>
+<p>From a human point of view, we can write it as <code class="language-go">&lt;name&gt;.&lt;extension&gt;</code>. Using this pattern, we can say that a given string is a filename. But for a computer to make the same conslusions, we need to formalize this string. The rules to represent patterns are provided by <strong>regular expressions</strong>. Consider the most common tasks on searching files. Let you be given an array of filenames, and you need to print groups of them by given conditions.</p>
+<pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    files := []string{
+        "test.txt",
+        "passwords.json",
+        "notes.doc",
+        "test2.txt",
+        "dont't forget!!!.txt",
+        "app.cfg",
+        "send.rtf",
+    }
+
+    for _, f := range files {
+        fmt.Println(f)
+    }
+}
+
+// Output:
+// test.txt
+// passwords.json
+// notes.doc
+// test2.txt
+// dont't forget!!!.txt
+// app.cfg
+// send.rtf
+</code></pre>
+<h5 id="initialization-of-a-regular-expression">Initialization of a regular expression</h5>
+<p>Before using the regexp package, you need to know how it works in golang.</p>
+<p>A regular expression is a Golang structure that is created from a string with special syntax rules. You can initialize a new regexp structure using <code class="language-go">Compile</code> or <code class="language-go">MustCompile</code> methods. Both methods create the structure, but only the <code class="language-go">Compile</code> method returns the error. It makes sense to use the <code class="language-go">MustCompile</code> method when you are sure about your regular expression, in the worst case you will get the panic on your runtime. Using <code class="language-go">Compile</code> is safer: you can always check if any error occurs while the program is running.</p>
+<p>The <code class="language-go">MustCompile</code> method is illustrated below:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    mustCompileRe := regexp.MustCompile(`**`) // panic!
+
+    fmt.Println(mustCompileRe) // won't print because of the panic above
+}
+
+// Output:
+// panic: regexp: Compile(`**`): error parsing regexp: missing argument to repetition operator: `*`</code></pre>
+<p>Now look at the <code class="language-go">Compile</code> method:</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    compileRe, err := regexp.Compile(`**`)
+
+    if err != nil {
+        fmt.Println("Compile error:", err)
+    } else {
+        fmt.Println(compileRe)
+    }
+}
+
+// Output:
+// Compile error: error parsing regexp: missing argument to repetition operator: `*`
+</code></pre>
+<p></p><div class="alert alert-primary">To create a regular expression template, it's better to use the slash quotes <code class="language-go">`</code> so you won't need to escape slash characters: <code class="language-go">"\\w+"</code> or <code class="language-go">`\w+`</code>.</div><p></p>
+<p>The error message is still the same, but the output method has changed. In the first example, the error prints with <code class="language-go">panic</code>, it means what the code after the <code class="language-go">MustCompile</code> method doesn't run. The second example, in turn, runs the script to the end, and the error is generated by the <code class="language-go">Compile</code> method. In this case, you can handle it by yourself.</p>
+<h5 id="match-the-pattern">Match the pattern</h5>
+<p>The following methods help you answer the question: is a pattern contained in the string? There are two of them: <code class="language-go">Match</code> and <code class="language-go">MatchString</code>.</p>
+<p>The <code class="language-go">Match</code> method takes the slice of bytes <code class="language-go">[]byte</code> as an argument. The <code class="language-go">MatchString</code> method takes the <code class="language-go">string</code>. Both return a <code class="language-go">boolean</code> value. If it is set to <code class="language-go">true</code>, it means that the sequence has been found in the source string, and if not, it will be <code class="language-go">false</code>.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    re := regexp.MustCompile(`go`)
+
+    fmt.Println(re.Match([]byte("Golang")))
+    fmt.Println(re.Match([]byte("golang")))
+
+    fmt.Println(re.MatchString("It has returned false"))
+    fmt.Println(re.MatchString("You've got it right!"))
+}
+
+// Output:
+// false
+// true
+// false
+// true
+</code></pre>
+<p></p><div class="alert alert-primary">The pattern of regexp is case-sensitive. You can see it in the first and the second lines of the output in the example above.</div><p></p>
+<p>You probably think that regular expressions can only return errors and search for substrings. Well, let's not rush to judgment. Next, you will learn about the true power of regular expressions.</p>
+<h5 id="the-dot">The dot</h5>
+<p>Let's get back to the filenames problem.</p>
+<p>The first condition to search is the length of a filename. It's not as simple a task as it may seem at first glance. You could try to use the <code class="language-go">len()</code> function of golang, but it counts the bytes of the string, and if the filename contains a two-byte symbol, you will get a wrong answer. Alternatively, you could use methods of working with strings, but in that case, you would need to take into account a lot of possible variants of search. Instead of complicateing the task this much, let's instead concentrate on regular expressions.</p>
+<p>For example, let's try to print filenames with the symbols <code class="language-go">d</code> and <code class="language-go">t</code>, and two symbols between. The file's name can be compiled from a lot of symbols (almost all available, except for some service ones). Thus, the template of the filename would in the "human" way look like this: <code class="language-go">d&lt;any-symbol-1&gt;&lt;any-symbol-2&gt;t</code>.</p>
+<p>The regexp has a mark that can fill the spaces between <code class="language-go">d</code> and <code class="language-go">t</code>! Is the dot <code class="language-go">.</code>. It can fill any single symbol in a string. The expression template for the case above will look like <code class="language-go">d..t</code>. Let's compile the pattern and take it to a conditional expression: </p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    files := []string{
+        "test.txt",
+        "passwords.json",
+        "notes.doc",
+        "test2.txt",
+        "dont't forget!!!.txt",
+        "app.cfg",
+        "send.rtf",
+    }
+    re := regexp.MustCompile(`d..t`)
+
+    for _, f := range files {
+        if re.MatchString(f) {
+            fmt.Println(f)
+        }
+    }
+}
+
+// Output:
+// dont't forget!!!.txt
+// send.rtf</code></pre>
+<p></p><div class="alert alert-primary">The pattern can occur at any place within the string, and the program will find it. For example, the first line of the output above was triggered by "dont" placed at the beginning of a string (and because the word was written with a mistake). The second line of the output was triggered by <code class="language-go">d.rt</code>, and that pattern was placed in the middle of the string.</div><p></p>
+<h5 id="the-star">The star</h5>
+<p>The next most popular task of file search is how to find files with some pattern inside the filename.</p>
+<p>Consider a task of finding filenames with a certain symbol, considering that the symbol can repeat unlimited times in a row. Let it be the "<span style="color: #000000;">!"</span> symbol.</p>
+<p>The regexp mark <code class="language-go">*</code> can fill any symbol any number of times. This mark works properly only with a symbol before it, otherwise it returns an error. To find filenames with "<span style="color: #000000;">!",</span> you can use the following pattern: <code class="language-go">!*</code>. Now let's try to put it to practice and find the needed filenames by using the regular expression: <code class="language-go">forget!*</code>.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    files := []string{
+        "test.txt",
+        "passwords.json",
+        "notes.doc",
+        "test2.txt",
+        "dont't forget!!!.txt",
+        "app.cfg",
+        "send.rtf",
+    }
+    re := regexp.MustCompile(`forget!*`)
+
+    for _, f := range files {
+        if re.MatchString(f) {
+            fmt.Println(f)
+        }
+    }
+}
+
+// Output:
+// dont't forget!!!.txt</code></pre>
+<h5 id="combination-of-marks">Combination of marks</h5>
+<p>To combine the marks, you need to follow the rules of regexp. So far, we've followed only one strict rule: before the star, we need to place a symbol. Let's follow it and place the dot before the star: <code class="language-go">.*</code>. This pattern can find any pattern of any length!</p>
+<p>The next task is to try to find filenames with a sequence between the two <code class="language-go">t</code> symbols. The pattern looks like <code class="language-go">t&lt;some_sequence_or_empty&gt;t</code>. Or <code class="language-go">t.*t</code> in regexp.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    files := []string{
+        "test.txt",
+        "passwords.json",
+        "notes.doc",
+        "test2.txt",
+        "dont't forget!!!.txt",
+        "app.cfg",
+        "send.rtf",
+    }
+    re := regexp.MustCompile(`t.*t`)
+
+    for _, f := range files {
+        if re.MatchString(f) {
+            fmt.Println(f)
+        }
+    }
+}
+
+// Output:
+// test.txt
+// test2.txt
+// dont't forget!!!.txt
+</code></pre>
+<h5 id="the-backslash">The backslash</h5>
+<p>The last symbol we need to learn about is the backslash <code class="language-go">\</code>. It's a magic symbol, because it can switch the abilities of other symbols! For example, <code class="language-go">.</code> is the filler for any single symbol, but this <code class="language-go">\.</code> is just a dot. The pattern <code class="language-go">\.</code> searches for a single dot. It works in reverse, as well: let's turn to common knowledge about strings and remember that <code class="language-go">\n</code> is a symbol of the string end. But <code class="language-go">n</code> it just a letter.</p>
+<p>Finally, let's figure out how to find filenames by extension, using the regexp. Let it be the <code class="language-go">json</code> extension. The pattern must include the dot, while the name of the file is any: <code class="language-go">.*\.json</code>.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    files := []string{
+        "test.txt",
+        "passwords.json",
+        "notes.doc",
+        "test2.txt",
+        "dont't forget!!!.txt",
+        "app.cfg",
+        "send.rtf",
+    }
+    re := regexp.MustCompile(`.*\.json`)
+
+    for _, f := range files {
+        if re.MatchString(f) {
+            fmt.Println(f)
+        }
+    }
+}
+
+// Output:
+// passwords.json
+</code></pre>
+<h5 id="the-problem">The problem</h5>
+<p>Let's get back to the HTML problem and answer the question: does the string contain the <code class="language-go">div</code> HTML tag?</p>
+<p>First of all, you need to know how the tag should look. Let's generate the tag pattern: <code class="language-go">&lt;tagname attributes&gt;content&lt;/tagname&gt;</code>. And now you need to represent that pattern with regular expressions.</p>
+<p>You have just learned a few minutes ago that regexp can contain primitive symbols and powered marks. Try to separate the HTML tag into two sides: passive and active. The passive side includes symbols that must be always inside the string. In our case, these are <code class="language-go">&lt;div&gt;&lt;/div&gt;</code>.</p>
+<p>The active part consists of changing symbols. The attributes and content can include strings of various lengths or symbols. The powered dot combined with the star can help us! The sequence <code class="language-go">.*</code> is suitable in both cases. The final expression is <code class="language-go">&lt;div.*&gt;.*&lt;\/div.*&gt;</code>.</p>
+<pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "regexp"
+)
+
+func main() {
+    re := regexp.MustCompile(`&lt;div.*&gt;.*&lt;\/div.*&gt;`)
+
+    fmt.Println(re.Match([]byte("&lt;div&gt;Accept!&lt;/div&gt;")))
+    fmt.Println(re.Match([]byte("&lt;div&gt;Reject!&lt;div&gt;")))
+
+    fmt.Println(re.MatchString("It's return false"))
+    fmt.Println(re.MatchString("&lt;div hidden class='h1'&gt;With attributes!&lt;/div&gt;"))
+}
+
+// Output:
+// true
+// false
+// false
+// true
+</code></pre>
+<h5 id="conclusion">Conclusion</h5>
+<p>This topic has been only the first step into the deep dungeon of regular expressions. Let's consolidate the knowledge:</p>
+<ul>
+<li>regular expressions are a more flexible way to search patterns in text;</li>
+<li>to enchant a string, you can use the <code class="language-go">Compile</code> or <code class="language-go">MustCompile</code> methods;</li>
+<li>to test a string for a pattern, use the <code class="language-go">Match</code> or <code class="language-go">MatchString</code> methods;</li>
+<li>use the slash quotes <code class="language-go">`</code> to represent the regexp string;</li>
+<li>dot <code class="language-go">.</code> or star <code class="language-go">*</code> symbols are the regexp marks;</li>
+<li>backslash <code class="language-go">\</code> switches the power of symbols.</li>
+</ul></body></html>

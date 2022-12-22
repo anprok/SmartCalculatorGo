@@ -1,0 +1,150 @@
+<h2>Type conversion and overflow</h2>
+<html><body><p>In this topic, you will extend your knowledge about variable types, as well as learn how to convert one type to another and get acquainted with variable overflow.</p><h5 id="conversion-of-numbers">Conversion of numbers</h5><p>Golang is a strongly-typed programming language, and information about operations with variables gives you more understanding of how Go works. Let's look at a code example.</p><p>At the beginning of the piece of code below, we create a variable with the <code class="language-go">int64</code> type, because it is the largest variable available. Next, we create an <code class="language-go">int8</code> variable. Converting integer types is easy: just take a variable or a value, add brackets around it, and you will get a value of the new type:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var longInt int64 = 4295033104
+    var smallInt int8 = 42
+
+    from64To32 := int32(longInt) // convert int64 to int32
+    from8To32 := int32(smallInt) // convert int8 to int32
+
+    fmt.Println(longInt)
+    fmt.Println(smallInt)
+
+    fmt.Println(from64To32)
+    fmt.Println(from8To32)
+}
+
+// Output:
+// 4295033104
+// 42
+// 65808
+// 42</code></pre><p>The same principle also applies to all other <code class="language-go">int</code> and <code class="language-go">uint</code> types. Just remember that if you convert a bigger value to a smaller one or convert signed and unsigned values, the result can change.</p><p>Type conversion between float and integer numbers works just in the same way between integers. Some examples are below:</p><pre><code class="language-go">package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func main() {
+	var floatVar float32 = 12.5
+	var longInt int64 = 42
+	var borderInt uint64 = uint64(math.Pow(2, 64))
+
+	floatToInt := int8(floatVar)
+	intToFloat := float32(longInt)
+	borderToFloat := float32(borderInt)
+
+	fmt.Println(floatToInt)
+	fmt.Println(intToFloat)
+	fmt.Println(borderToFloat)
+}
+
+// Output:
+// 12
+// 42
+// 9.223372e+18</code></pre><div class="alert alert-primary"><p>As a result of the third conversion, we get a value going beyond the type range (for 32-bit float type). Despite that, the conversion occurs without errors, the number just gets an exponent view.</p></div><p>Trying to convert float types to integers returns a number without the fractional part. If you try to convert an integer back to a float number, the value of the number will not change. Thus, you should make sure to use the right variable type; otherwise, you will get an incorrect answer.</p><h5 id="overflow"> Overflow</h5><p>What happens if a mathematical expression returns a value that goes beyond the variable range? Let's see: we will take two <code class="language-go">int8</code> variables, set their values close to the type range boundary, and try to add them.</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var rightBorder1 int8 = 127
+    var rightBorder2 int8 = 127
+
+    overflowVar := rightBorder1 + rightBorder2
+
+    fmt.Println(overflowVar)
+}
+
+// Output:
+// -2</code></pre><p>The return value is rather unexpected… Why don't we get 254? Let's look into it. The expression contains two strongly-typed variables of the <code class="language-go">int8</code> type, and the third variable <code class="language-go">overflowVar</code> has the same <code class="language-go">int8</code> type. The maximum value for <code class="language-go">int8</code> is 127, so 254 just can't be there. It is clear, but doesn't explain the appearance of -2 as the return value.</p><p>What has happened here is called <strong>overflow</strong>. It occurs when you try to set a value that goes beyond the supported range. You can't have an unsupported value assigned to a variable, but you can get this value via arithmetic expressions. Have a look at the example below:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    // var unsupInt8 int8 = 128
+    // error: constant 128 overflows int8
+    // var unsupUint8 uint8 = 256
+    // error: constant 256 overflows uint8
+
+    var leftInt8 int8 = -128
+    var rightUint8 uint8 = 255
+
+    fmt.Printf("origin: %d | sub 1: %d\n", leftInt8, leftInt8 - 1)
+    fmt.Printf("origin: %d | add 1: %d\n", rightUint8, rightUint8 + 1)
+}
+
+// Output:
+// origin: -128 | sub 1: 127
+// origin: 255 | add 1: 0</code></pre><p>You can see that when a variable has an overflow on one boundary, it goes to the opposite boundary.</p><h5 id="boolean-conversion">Boolean conversion</h5><p>Every programming language has a mechanism that compares types and allows performing conversion operations. Golang is no exception. However, a boolean type is unique — it can't be compared to other types, and the code below will return an error:</p><pre><code class="language-go">a := bool(0)     // error!
+b := bool("yes") // error!
+c := bool(123)   // error!</code></pre><p>You can use comparison operations to convert numbers or strings to the boolean type. They will return a boolean value. All you need to do is compare a number with zero or an empty string:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+    var numberVar int8 = 12
+    var stringVar string = ""
+
+    var numFlag bool
+    var strFlag bool
+
+    // number to bool
+    numFlag = numberVar != 0
+
+    // string to bool
+    strFlag = stringVar != ""
+
+    fmt.Println(numFlag)
+    fmt.Println(strFlag)
+}
+
+// Output:
+// true
+// false</code></pre><h5 id="bytes-and-runes">Bytes and runes</h5><p>Bytes and runes are aliases for integer number types and function like integers. All conversion and math operations supported for integers and floats also work for bytes and runes. Moreover, bytes and runes can be compared to strings under certain conditions. Some rules about the conversion of numbers to strings are the following:</p><ul><li><p>the number should have an integer type;</p></li><li><p>all symbols have a numeric code, but not all codes have a symbol;</p></li><li><p>numeric code is mapped to a character encoding.</p></li></ul><p>Now, let's try to convert some numbers to strings:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	var intNumber int8 = 1
+	var byteNumber byte = 42
+	var runeNumber rune = 43
+
+	fromInt := string(intNumber)
+	fromByte := string(byteNumber)
+	fromRune := string(runeNumber)
+	fromConst := string(44)
+
+	fmt.Println(fromInt)
+	fmt.Println(fromByte)
+	fmt.Println(fromRune)
+	fmt.Println(fromConst)
+}
+
+// Output:
+//
+// *
+// +
+// ,</code></pre><p>We expect the output with four symbols, but there are only three of them. The first line of our output is empty, which means that the current character encoding table doesn't have a symbol with the code “1” or that it's a control character. The output may suggest which character encoding table is used in the system. For example, the char “percent” has the code 37. Using the <a href="https://www.charset.org" rel="noopener noreferrer nofollow" target="_blank">Charset site,</a> you can find out that the encoding for these symbols is “UTF-8”.</p><h5 id="strings">Strings</h5><p>In the previous section, we've seen how we can convert other types to strings. Now, let's consider the reverse process:</p><ul><li><p>we can convert a <code class="language-go">string</code> to a slice;</p></li><li><p>the slice must have the <code class="language-go">rune</code> or <code class="language-go">byte</code> type.</p></li></ul><p>You can see an example of such operation below:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func main() {
+	// var singleChar string = "+"
+	// a := byte(singleChar) // conversion error
+	// b := int(singleChar)  // conversion error
+
+	var helloString string = "Hello!"
+
+	latToBytes := []byte(helloString)
+	latToRunes := []rune(helloString)
+
+	fmt.Println(latToBytes)
+	fmt.Println(latToRunes)
+}
+
+// Output:
+// [72 101 108 108 111 33]
+// [72 101 108 108 111 33]</code></pre><p>As you can see, it's easy to use! Just add square brackets before the type name to represent numbers in a slice.</p><h5 id="conclusion">Conclusion</h5><p>In this topic, we've covered the theory of type conversion. In particular, you should remember the following points:</p><ul><li><p>conversion is based on the types we compare (numbers, boolean values, strings, slices);</p></li><li><p>conversion and math operations can be the cause of overflow;</p></li><li><p>boolean conversion passes using comparison operations;</p></li><li><p>any integer number can be converted to a string;</p></li><li><p>strings can be converted to slices of the <code class="language-go">byte</code> or <code class="language-go">rune</code> type.</p></li></ul></body></html>

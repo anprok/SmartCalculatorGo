@@ -1,0 +1,20 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: "Calling the <code>sum()</code> function directly within your code:<br><pre><code\
+    \ class=\"language-go\">fmt.Println(sum(1, 2))</code></pre><br>"
+- text: "Calling the entire function signature of <code>sum()</code> within your code:<br><pre><code\
+    \ class=\"language-go\">fmt.Println(func sum(1, 2 int) int)</code></pre><br>"
+- text: "Assigning <code>sum()</code> to a variable, and then calling/using that variable\
+    \ in your code:<br><pre><code class=\"language-go\">total := sum(1, 2)<br>fmt.Println(sum)</code></pre><br>"
+files:
+- name: main.go
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23444#comment
+status: Solved
+record: -1
+local_check: false

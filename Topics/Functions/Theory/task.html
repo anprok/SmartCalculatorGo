@@ -1,0 +1,49 @@
+<h2>Functions</h2>
+<p>Functions are blocks of code that take zero or more inputs, process these inputs, and produce an output. Functions help us divide our program into small or medium-sized reusable pieces of code, thus improving readability and maintainability, as well as reducing the complexity of our Go program.</p><p>In this topic, we'll learn about function declarations, how to call functions, and also how to pass data to functions in Go.</p><h5 id="basic-syntax">Basic syntax</h5><p>In Go, a <strong>function's signature</strong> has the following structure:</p><ul><li><p>It starts with the keyword <code class="language-go">func</code>, followed by the name of the function;</p></li><li><p>Then we have a set of parentheses <code class="language-go">(...)</code> known as the <strong>parameter list</strong> — it holds zero or more <strong>parameters</strong> used to import variables into the function;</p></li><li><p>After the parameter list, we have the <strong>return type</strong> of the function — it can be of a single type, of various types, or be empty as well;</p></li><li><p>At the end of the function declaration, we have the code block of the function enclosed in curly brackets <code class="language-go">{}</code>.</p></li></ul><p>Let's take a look at the declaration of the <code class="language-go">hello()</code> function:</p><pre><code class="language-go">func hello(name string) string {
+    return "Hello " + name + "!"
+}</code></pre><p>In the first line, we can see the <code class="language-go">func</code> keyword, followed by <code class="language-go">hello</code>, which is the name of the function. After the function's name, we have the parameter list that takes only one parameter called <code class="language-go">name</code> of the <code class="language-go">string</code> type, and the function's return type <code class="language-go">string</code>. Collectively, the function's name, the parameter list, and the return type are known as the function's signature.</p><h5 id="calling-a-function-and-passing-arguments">Calling a function and passing arguments</h5><p>Now that we understand the basic syntax of Go functions let's explore two different ways we can call the <code class="language-go">hello()</code> function within our <code class="language-go">main</code> function and pass a <code class="language-go">string</code> value as an argument to the <code class="language-go">message</code> parameter:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func hello(message string) string {
+    return "Hello, " + message
+}
+
+func main() {
+    // Option #1 - Assign the return value of a function call to a variable.
+    // Here we assign to greeting the return value of the hello() function call:
+    greeting := hello("I was called via Option #1!")
+
+    // Call the greeting variable within the Println function:
+    fmt.Println(greeting) // Hello, I was called via Option #1!
+}</code></pre><p>In option #1, we assign the <strong>return value</strong> of the <code class="language-go">hello()</code> function call to the <code class="language-go">greeting</code> variable. In this case, the return value of <code class="language-go">hello()</code> is a concatenated string <code class="language-go">"Hello, "</code> + the value: <code class="language-go">"I was called via Option #1!"</code> that we passed to <code class="language-go">hello()</code> as an argument.</p><p>Then, we call the <code class="language-go">greeting</code> variable within the <code class="language-go">fmt.Println()</code> function to finally print the return value of the <code class="language-go">hello()</code> function.</p><pre><code class="language-go">// Option #2 - Call the hello function with a string value directly within the Println function:
+fmt.Println(hello("I was called via Option #2!")) // Hello, I was called via Option #2!</code></pre><p>In option #2, we take a more direct approach. We call the <code class="language-go">hello()</code> function directly within the <code class="language-go">fmt.Println()</code> function with the <code class="language-go">string</code> value <code class="language-go">"I was called via Option #2!"</code>. In both cases, the <code class="language-go">string</code> values are passed as <strong>arguments</strong> to the <code class="language-go">message</code> parameter of the <code class="language-go">hello()</code> function. In simple terms, an <strong>argument</strong> is a value or variable sent to the function when it is called.</p><h5 id="passing-arguments-by-pointers">Passing arguments by pointers</h5><p>Go allows us to pass arguments to our function by values or pointers; passing arguments by pointers is also known as <strong>passing by reference</strong>. In contrast to passing by value, which makes a copy of the data we are passing to the function, passing by reference makes a copy of the pointer but not of the data it points to.</p><p>To further explain the difference between passing arguments by values or passing by reference, let's compare two functions: <code class="language-go">realSwap()</code>, which takes two pointer-to-integer values as arguments, and the <code class="language-go">fakeSwap()</code> function, which takes two integer values as arguments.</p><p>Let's take a look at the <code class="language-go">realSwap()</code> function first:</p><pre><code class="language-go">package main
+
+import "fmt"
+
+func realSwap(x *int, y *int) {
+    // directly exchange the value stored at address x (42) 
+    // with the value stored at address y (27)
+    *x, *y = *y, *x
+}
+
+func main() {
+    var num1 = 42
+    var num2 = 27
+
+    fmt.Println("Before swapping values: x =", num1, "and y =", num2)
+    realSwap(&amp;num1, &amp;num2) // pass the address of num1 and num2 to realSwap
+    fmt.Println("After swapping values: x =", num1, "and y =", num2)
+}
+
+// Output:
+// Before swapping values: x = 42 and y = 27
+// After swapping values: x = 27 and y = 42</code></pre><p>In the example above, we call the function <code class="language-go">realSwap()</code> and pass the address of <code class="language-go">num1</code> and <code class="language-go">num2</code> as parameters, since <code class="language-go">realSwap()</code> takes two pinter-to-integer <code class="language-go">*int</code> values as arguments. Within the code block of <code class="language-go">realSwap()</code>, we directly exchange the values of <code class="language-go">num1</code> and <code class="language-go">num2</code> via the <code class="language-go">*x, *y = *y, *x</code> syntax.</p><p>If we tried the same procedure with the function <code class="language-go">fakeSwap()</code> that takes two integer values instead of pointers, the values of <code class="language-go">num1</code> and <code class="language-go">num2</code> would not get updated. Let's take a look at the declaration of <code class="language-go">fakeSwap()</code>:</p><pre><code class="language-go">func fakeSwap(x int, y int) { // fakeSwap takes two integer types as arguments
+    x, y = y, x
+}</code></pre><p>Now let's call <code class="language-go">fakeSwap()</code> within our <code class="language-go">main</code> function and check the values of <code class="language-go">num1</code> and <code class="language-go">num2</code> after executing our program:</p><pre><code class="language-go">fmt.Println("Before swapping values: x = ", num1, "and y =", num2)
+fakeSwap(num1, num2) // pass integer values num1 and num2 to fakeSwap
+fmt.Println("After swapping values: x = ", num1, "and y =", num2)
+
+// Output:
+// Before swapping values: x = 42 and y = 27
+// After swapping values: x = 42 and y = 27</code></pre><p>We can see that the values of <code class="language-go">num1</code> and <code class="language-go">num2</code> have not been swapped: they've stayed the same. This happens because <code class="language-go">fakeSwap()</code> receives and manipulates a private copy of the two integers we passed to it and stores them in different memory locations. Therefore, any changes made inside <code class="language-go">fakeSwap()</code> are not reflected in the actual parameters of the caller. In contrast, when we call <code class="language-go">realSwap()</code> and pass to it the pointers <code class="language-go">*x</code> and <code class="language-go">*y</code>, the values of <code class="language-go">num1</code> and <code class="language-go">num2</code> are properly exchanged. Taking the address of the variables explicitly as arguments allows <code class="language-go">realSwap()</code> to mutate and swap them.</p><h5 id="conclusion">Conclusion</h5><p>Let's briefly remember what we've learned on this topic:</p><ul><li><p>Collectively, a function's name, parameters, and return type are known as the function's signature;</p></li><li><p>We can assign a function call to a variable and then use that variable in the <code class="language-go">main</code> function, or we can call a function directly by its name within the <code class="language-go">main</code> function;</p></li><li><p>We can pass arguments to a function by values or by pointers (also known as passing by reference).</p></li></ul>

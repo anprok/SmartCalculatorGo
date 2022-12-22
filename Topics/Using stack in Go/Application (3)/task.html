@@ -1,0 +1,28 @@
+<h2>Finding a path</h2>
+<p></p>
+<p></p><div class="alert alert-primary">Wow! This problem is kind of tricky. If you're ready to put your thinking cap on, brace yourself, and good luck! Otherwise, you can skip it for now and return any time later.</div>
+<p>Here is a real class of tasks that use stacks: pathfinding. You will get a lot of numbers. The first number is the width of the scheme, the second is the height. The remaining values are the layout. The layout consists of integers:</p>
+<ul>
+<li><code class="language-bash">8</code> is a wall (you can't pass through);</li>
+<li><code class="language-bash">0</code> is an empty space (you can pass through);</li>
+<li><code class="language-bash">1</code> is the beginning of a journey;</li>
+<li><code class="language-bash">9</code> is the end of a journey.</li>
+</ul>
+<p>You can only move in four directions (left, right, up, down). All paths in the layout are represented by corridors. And the question is: will you be able to go from start to finish?</p>
+<p>Let's analyse the first two examples. At the first example you get a layout <code class="language-bash">4</code> by <code class="language-bash">5</code> with layout:</p>
+<pre><code class="language-bash">8 8 8 8
+8 0 9 8
+8 8 0 8
+8 1 0 8
+8 8 8 8</code></pre>
+<p>This is a fairly simple layout, at the starting point you can only move in one direction (to the right). After that, you take two steps up, and the journey ends. The answer is <code class="language-bash">true</code>.</p>
+<p>The second example has almost the same scheme, but contains one additional wall:</p>
+<pre><code class="language-bash">8 8 8 8
+8 0 9 8
+8 8 0 8
+8 1 8 8
+8 8 8 8</code></pre>
+<p>The wall closes only one possible path! This means that the problem has no solution, and the answer is <code class="language-bash">false</code>.</p><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">4<br>5<br>8 8 8 8<br>8 0 9 8<br>8 8 0 8<br>8 1 0 8<br>8 8 8 8<br></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">true<br></code></pre><br><br><b>Sample Input:</b><br><pre><code class="language-no-highlight">4<br>5<br>8 8 8 8<br>8 0 9 8<br>8 8 0 8<br>8 1 8 8<br>8 8 8 8<br></code></pre><br><b>Sample Output:</b><br><pre><code class="language-no-highlight">false</code></pre><br><br><br><font color="gray">Memory limit: 256 MB</font><br><font color="gray">Time limit: 8 seconds</font><br><br>
+<b>Caution</b><br><br>
+You may see errors in your code or execution results due to missing context. Don’t worry about it, just write the solution and press Check.
+<br><br>

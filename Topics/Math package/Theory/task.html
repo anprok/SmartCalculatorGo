@@ -1,0 +1,63 @@
+<h2>Math package</h2>
+<html><body><p>Now that you have some knowledge about basic arithmetic operations in Go, it's time to learn how to perform advanced numeric operations, such as finding the maximum or minimum of two numbers, rounding a number up or down, and even more complex operations like working with trigonometric functions.</p><p>In Go, the <code class="language-go">math</code> package from the standard library provides useful mathematical functions and constants; in this topic, we'll learn about the most useful functions of the <code class="language-go">math</code> package.</p><h5 id="advanced-arithmetic-functions">Advanced arithmetic functions</h5><p>There are many functions within the <code class="language-go">math</code> package; we'll start off by taking a look at the functions that can help us perform the most common numeric operations on <code class="language-go">float64</code> types, such as:</p><ul><li><p><code class="language-go">math.Abs(x)</code> — returns the absolute value of its argument;</p></li><li><p><code class="language-go">math.Min(x, y)</code> — returns the minimum value between two arguments;</p></li><li><p><code class="language-go">math.Max(x, y)</code> — returns the maximum value between two arguments.</p></li></ul><p>Now, let's take a look at how we can use the above functions in a Go program:</p><pre><code class="language-go">package main
+
+import (
+    "fmt"
+    "math"
+)
+
+func main() {
+    fmt.Println(math.Abs(-1.618)) // Abs is 1.618
+
+    fmt.Println(math.Min(0, -6)) // Min is -6
+    fmt.Println(math.Max(3, 2))  // Max is 3
+}</code></pre><div class="alert alert-primary"><p>Take notice that the above functions take <code class="language-go">float64</code> types as arguments and return <code class="language-go">float64</code> types... so, if you want to calculate the maximum value between two predefined <code class="language-go">int</code> type variables, you'll need to <strong>cast</strong> the arguments as <code class="language-go">float64</code> types using the following syntax:</p><pre><code class="language-go">...
+
+func main() {
+    var x, y int = 3, 4
+
+    // We cast 'x' and 'y' as float64 types below:
+    fmt.Println(math.Max(float64(x), float64(y))) // Max is 4
+}</code></pre></div><h5 id="rounding-functions">Rounding functions</h5><p>Another basic numeric operation is <strong>rounding</strong> a number up or down. The <code class="language-go">math</code> package provides three convenient functions to round <code class="language-go">float64</code> types:</p><ul><li><p><code class="language-go">math.Floor(x)</code> — returns the greatest integer value less than or equal to its argument;</p></li><li><p><code class="language-go">math.Ceil(x)</code> — returns the least integer value greater than or equal to its argument;</p></li><li><p><code class="language-go">math.Round(x)</code> — returns the nearest integer value, rounding half away from zero.</p></li></ul><p>Below are simple use cases of the rounding functions within a Go program:</p><pre><code class="language-go">...
+
+func main() {
+    fmt.Println(math.Floor(3.43)) // Floor is 3
+    fmt.Println(math.Ceil(1.71))  // Ceil is 2
+
+    roundUp := math.Round(7.50)
+    fmt.Println(roundUp) // roundUp is 8
+
+    roundDown := math.Round(7.49)
+    fmt.Println(roundDown) // roundDown is 7
+}
+</code></pre><p>Let's take a detailed look at the <code class="language-go">math.Round()</code> function. It will round up a number if its decimals are greater than or equal to <code class="language-go">&gt;= 0.5</code>; in contrast, if the number decimals are less than <code class="language-go">&lt; 0.5</code>, then it will round the number down.</p><h5 id="constants-in-the-math-package">Constants in the math package</h5><p>So far, we've seen functions that allow us to perform basic numeric operations; however, the <code class="language-go">math</code> package also contains important <strong>numeric constants</strong>, such as <a href="https://en.wikipedia.org/wiki/Pi" rel="noopener noreferrer nofollow" target="_blank">Pi (π)</a> and <a href="https://en.wikipedia.org/wiki/E_(mathematical_constant)" rel="noopener noreferrer nofollow" target="_blank">Euler's number (<em>e)</em></a><em>:</em></p><ul><li><p><code class="language-go">math.Pi</code> — a constant for Pi; it is the ratio of the circumference of a circle to its diameter;</p></li><li><p><code class="language-go">math.E</code> — a constant for Euler's number; it is the base for natural logarithms;</p></li><li><p><code class="language-go">math.MinInt</code> — a constant for the minimum integer limit value;</p></li><li><p><code class="language-go">math.MaxInt</code> — a constant for the maximum integer limit value.</p></li></ul><p>Let's take a look at the value of each one of these constants in a Go program:</p><pre><code class="language-go">...
+
+func main() {
+    fmt.Println(math.Pi) // Pi is 3.141592653589793...
+    fmt.Println(math.E)  // E is 2.718281828459045...
+
+    fmt.Println(math.MinInt) // MinInt is -9223372036854775808
+    fmt.Println(math.MaxInt) // MaxInt is 9223372036854775807
+}</code></pre><p></p><div class="alert alert-primary"><p>The <code class="language-go">math</code> package contains many other numeric constants; you can take a look at them in the <a href="https://pkg.go.dev/math#pkg-constants" rel="noopener noreferrer nofollow" target="_blank">official </a><code class="language-go">math</code> package documentation.</p></div><p></p><h5 id="exponential-and-logarithmic-functions">Exponential and logarithmic functions</h5><p>When we need to perform more advanced mathematical operations on <code class="language-go">float64</code> types, such as calculating the square/cube root of a number, raising a number to a certain power, or calculating the natural logarithm of a number, we can use the following functions:</p><ul><li><p><code class="language-go">math.Sqrt(x)</code> — returns the square root √ of its argument;</p></li><li><p><code class="language-go">math.Cbrt(x)</code> — returns the cube root ∛ of its argument;</p></li><li><p><code class="language-go">math.Pow(x, y)</code> — returns the value of the first argument raised to the power of the second argument;</p></li><li><p><code class="language-go">math.Log(x)</code> — returns the natural logarithm of its argument.</p></li></ul><pre><code class="language-go">...
+
+func main() {
+    fmt.Println(math.Sqrt(4))   // Sqrt is 2
+    fmt.Println(math.Pow(2, 2)) // the square of 2 is 4
+
+    fmt.Println(math.Cbrt(64))  // Cbrt is 4
+    fmt.Println(math.Pow(4, 3)) // the cube of 4 is 64
+
+    fmt.Println(math.Log(1))      // Log of 1 is 0
+    fmt.Println(math.Log(math.E)) // Log of math.E is 1
+}</code></pre><p>Take a look at what happens when we calculate the natural logarithm of the <code class="language-go">math.E</code> constant. Since <code class="language-go">math.E</code> is the base for natural logarithms, its natural logarithm value is exactly <code class="language-go">1</code>.</p><h5 id="trigonometric-functions">Trigonometric functions</h5><p>There are many trigonometric functions in the <code class="language-go">math</code> package. These trigonometric functions take <strong>radians</strong> of the <code class="language-go">float64</code> type as arguments.</p><p>The most commonly used trigonometric functions are the following:</p><ul><li><p><code class="language-go">math.Cos(x)</code> — returns the cosine of its radian argument;</p></li><li><p><code class="language-go">math.Sin(x)</code> — returns the sine of its radian argument;</p></li><li><p><code class="language-go">math.Tan(x)</code> — returns the tangent of its radian argument.</p></li></ul><p>As mentioned previously, the above functions take radians<em> </em>as arguments; so, if we wanted to calculate the cosine of 60° (degrees), we would need to apply the degrees to radians formula — <code class="language-go">degrees * math.Pi / 180</code>. Let's take a look at how we can do this in Go:</p><pre><code class="language-go">...
+
+func main() {
+    degrees := 60.0
+
+    // Below we apply the degrees to radians formula:
+    radians := degrees * math.Pi / 180 // 60.0 degrees are 1.04719... radians
+
+    fmt.Println(math.Cos(radians)) // Cos is 0.5000...
+    fmt.Println(math.Sin(radians)) // Sin is 0.8660...
+    fmt.Println(math.Tan(radians)) // Tan is 1.7320...
+}</code></pre><p>There are many more trigonometric functions within the <code class="language-go">math</code> package, such as the <a href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions" rel="noopener noreferrer nofollow" target="_blank">inverse trigonometric functions</a> like <code class="language-go">math.Acos()</code> used to calculate the arccosine of its argument, or the <a href="https://en.wikipedia.org/wiki/Hyperbolic_functions" rel="noopener noreferrer nofollow" target="_blank">hyperbolic functions</a> like <code class="language-go">math.Cosh()</code> used to calculate the hyperbolic cosine of its argument. If you want to learn more about these trigonometric functions, take a look at the <a href="https://pkg.go.dev/math" rel="noopener noreferrer nofollow" target="_blank">official </a><code class="language-go">math</code> package documentation.</p><h5 id="summary">Summary</h5><p>In this topic, we've learned how to perform basic numeric operations such as rounding a number up or down, as well as more complex operations like converting from degrees to radians and calculating the cosine of an angle value in radians. The <code class="language-go">math</code> package in Go provides many helpful functions that will make your life easier when you need to perform both simple and complex mathematical operations.</p><p>Now it's time to test your knowledge about the <code class="language-go">math</code> package and solve some theory and coding tasks. The coding tasks will be the most interesting, as you will see how we can use the <code class="language-go">math</code> package to calculate volumes and other trigonometric identities.</p></body></html>

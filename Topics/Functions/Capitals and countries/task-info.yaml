@@ -1,0 +1,16 @@
+type: code
+files:
+- name: main.go
+  visible: true
+  text: "package main\n\nimport \"fmt\"\n\n// Update the parameter list of the countryCapital\
+    \ function below:\nfunc countryCapital(?) string {\n\treturn capital + \" is the\
+    \ capital of \" + country\n}\n\n// DO NOT modify or delete the contents within\
+    \ the main function!\nfunc main() {\n    var capital, country string\n    fmt.Scanln(&capital,\
+    \ &country)\n\n    fmt.Println(countryCapital(capital, country))\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/23445#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Sat, 03 Dec 2022 07:47:25 UTC"
+record: -1
